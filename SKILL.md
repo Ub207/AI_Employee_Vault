@@ -14,7 +14,9 @@ AI_Employee_Vault/
 ├── Done/                # Completed tasks (your output goes here)
 ├── Logs/                # Daily action log (you write here)
 ├── Notes/               # Reference material
-├── Compony_Handbook.md  # RULES — read this before every action
+├── Channels/            # External inboxes (Gmail, Social, WhatsApp)
+├── Company_Handbook.md  # RULES — read this before every action
+├── Business_Goals.md    # Company mission and approval policy
 ├── Dashboard.md         # STATUS BOARD — update after every action
 └── SKILL.md             # THIS FILE — your operating manual
 ```
@@ -28,7 +30,7 @@ When a new file appears in `/Needs_Action`, follow these steps **in order**:
 - Identify: what is being asked, priority level, who requested it, any deadline
 
 ### Step 2: Check the Company Handbook
-- Open `Compony_Handbook.md`
+- Open `Company_Handbook.md`
 - Compare the task against **Sensitive Actions** list:
   - Financial documents (invoices, payments, refunds)
   - External communications (emails, messages to clients)

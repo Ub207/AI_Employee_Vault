@@ -1,0 +1,7 @@
+{
+  "source": "WhatsApp",
+  "from": "Client A",
+  "subject": "Please share the updated proposal",
+  "text": "Hi, can you send the latest proposal by tomorrow?",
+  "priority": "high"
+}

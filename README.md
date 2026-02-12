@@ -10,7 +10,7 @@ A markdown-based autonomous AI employee system built on Obsidian.
 [![Built with Claude](https://img.shields.io/badge/Built%20with-Claude%20Code-blueviolet)](https://claude.ai)
 [![Obsidian](https://img.shields.io/badge/Platform-Obsidian-7C3AED)](https://obsidian.md)
 [![Markdown](https://img.shields.io/badge/Format-Markdown-000000)](https://commonmark.org)
-[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-3-brightgreen)]()
+[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-8-brightgreen)]()
 [![Approval Pipeline](https://img.shields.io/badge/Approval%20Pipeline-Active-orange)]()
 
 ---
@@ -98,13 +98,25 @@ AI_Employee_Vault/
 ├── Done/                  # Completed tasks (archived)
 ├── Logs/                  # Daily action logs — full audit trail
 ├── Notes/                 # Reference material and research
-├── Compony_Handbook.md    # Rules, policies, and autonomy level
+├── Channels/              # External communication inboxes
+│   ├── Gmail_Inbox/       #   Email events (JSON)
+│   ├── Social_Inbox/      #   Social media events (JSON)
+│   └── WhatsApp_Inbox/    #   WhatsApp events (JSON)
+├── Company_Handbook.md    # Rules, policies, and autonomy level
+├── Business_Goals.md      # Company mission, goals, and approval policy
+├── SKILL.md               # AI Employee operating manual
 ├── Dashboard.md           # Live status view of all queues
+├── CEO_Briefing.md        # Weekly executive summary
+├── Weekly_Audit.md        # Weekly activity audit report
+├── watcher.py             # File watcher — monitors /Needs_Action
+├── local_reasoner.py      # Fallback processor (no Claude CLI)
+├── update_dashboard.py    # Auto-updates Dashboard.md
+├── weekly_audit.py        # Generates weekly audit + CEO briefing
 └── README.md              # You are here
 ```
 
-| Folder | Purpose |
-|--------|---------|
+| Folder / File | Purpose |
+|----------------|---------|
 | `/Needs_Action` | Inbox — drop tasks here for the AI to pick up |
 | `/Tasks` | Active plans and work-in-progress |
 | `/Pending_Approval` | Tasks awaiting manager sign-off |
@@ -113,6 +125,12 @@ AI_Employee_Vault/
 | `/Done` | Completed and archived tasks |
 | `/Logs` | Daily action logs — full audit trail |
 | `/Notes` | Reference material, research, general notes |
+| `/Channels` | External inboxes (Gmail, Social, WhatsApp) |
+| `Company_Handbook.md` | Rules, sensitivity flags, and autonomy level |
+| `Business_Goals.md` | Company mission, quarterly goals, approval policy |
+| `SKILL.md` | AI Employee operating manual |
+| `Dashboard.md` | Live status board — auto-updated |
+| `watcher.py` | File watcher that monitors `/Needs_Action` |
 
 ---
 
@@ -157,7 +175,7 @@ If a match is found, the task is **blocked** until the manager explicitly approv
 
 ## Demo Workflow
 
-This vault ships with **3 completed demo tasks** showing both workflow paths:
+This vault ships with **8 completed tasks** showing both workflow paths:
 
 ### Task 1: Client Invoice (Sensitive Path)
 | Step | Action |
@@ -184,9 +202,9 @@ This vault ships with **3 completed demo tasks** showing both workflow paths:
 
 | Metric | Value |
 |--------|-------|
-| Total tasks processed | 3 |
-| Sensitive actions flagged | 2 |
-| Approvals requested | 2 |
+| Total tasks processed | 8 |
+| Sensitive actions flagged | 3 |
+| Approvals requested | 3 |
 | Approvals granted | 2 |
 | Completion rate | 100% |
 
@@ -196,37 +214,16 @@ This vault ships with **3 completed demo tasks** showing both workflow paths:
 
 > Open this vault in Obsidian to see the full experience.
 
-### Dashboard View
-<!-- Screenshot: Dashboard.md showing live task status, queues, and stats -->
-`Dashboard.md` — Real-time view of all queues, recent activity, and lifetime stats.
+| View | Description |
+|------|-------------|
+| **Dashboard** | `Dashboard.md` — Real-time view of all queues, recent activity, and lifetime stats |
+| **Task Detection** | AI reads the inbox, checks Company Handbook, auto-processes or requests approval |
+| **Approval Pipeline** | Sensitive tasks blocked with full draft for manager review |
+| **Audit Log** | Every action timestamped and logged — full traceability |
+| **Completed Tasks** | Archived tasks with resolution details and approval records |
 
-![Dashboard](screenshots/dashboard.png)
-
-### Task Detection
-<!-- Screenshot: AI detecting a task in /Needs_Action and checking the handbook -->
-AI reads the inbox, checks the Company Handbook, and decides whether to auto-process or request approval.
-
-![Task Detection](screenshots/task-detection.png)
-
-### Approval Pipeline
-<!-- Screenshot: Pending_Approval folder with an approval request -->
-Sensitive tasks are blocked with a full draft for manager review. Nothing executes without sign-off.
-
-![Approval Pipeline](screenshots/approval-pipeline.png)
-
-### Audit Log
-<!-- Screenshot: Logs/2026-02-11.md showing timestamped entries -->
-Every action is timestamped and logged. Full traceability from inbox to completion.
-
-![Audit Log](screenshots/audit-log.png)
-
-### Completed Tasks
-<!-- Screenshot: Done folder with all 3 completed tasks -->
-Archived tasks with full resolution details, including approval records.
-
-![Completed Tasks](screenshots/completed-tasks.png)
-
-> **Note:** To add your own screenshots, create a `screenshots/` folder and replace the image paths above with your actual images.
+> **Add screenshots:** Place images in `screenshots/` and reference them here:
+> `![Dashboard](screenshots/dashboard.png)` etc.
 
 ---
 

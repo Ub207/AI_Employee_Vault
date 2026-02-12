@@ -1,0 +1,7 @@
+{
+  "source": "Gmail",
+  "from": "partner@example.com",
+  "subject": "Agenda for Monday meeting",
+  "text": "Sharing agenda draft, please confirm attendees.",
+  "priority": "medium"
+}
