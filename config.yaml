@@ -1,0 +1,76 @@
+# AI Employee Vault — Silver Tier Configuration
+# All system settings in one place. Every script reads from this file.
+
+vault_path: "."
+autonomy_level: MEDIUM  # LOW / MEDIUM / HIGH
+
+folders:
+  inbox: Needs_Action
+  tasks: Tasks
+  pending: Pending_Approval
+  approved: Approved
+  rejected: Rejected
+  done: Done
+  logs: Logs
+
+priority:
+  P0:
+    label: Critical
+    sla_hours: 1
+  P1:
+    label: High
+    sla_hours: 4
+  P2:
+    label: Medium
+    sla_hours: 24
+  P3:
+    label: Low
+    sla_hours: 72
+  default: P2
+  keywords:
+    urgent: P0
+    asap: P1
+    critical: P0
+    deadline: P1
+
+sensitivity:
+  keywords_weighted:
+    invoice: 0.8
+    payment: 0.9
+    email: 0.6
+    client: 0.5
+    delete: 0.9
+    password: 1.0
+    refund: 0.8
+    credential: 0.9
+    permission: 0.7
+    access: 0.6
+  threshold: 0.6
+  categories:
+    - financial
+    - external_communication
+    - data_deletion
+    - access_change
+
+sla:
+  reminder_after_hours: 2
+  escalation_after_hours: 8
+
+retry:
+  max_attempts: 3
+  initial_backoff: 2
+  max_backoff: 60
+
+watcher:
+  timeout: 120
+  poll_interval: 1
+
+scheduler:
+  - name: weekly_report
+    cron: "0 9 * * 5"
+    template: "Prepare weekly progress report"
+    priority: P2
+  - name: daily_standup
+    cron: "0 8 * * 1-5"
+    template: "Generate daily standup summary"
+    priority: P3

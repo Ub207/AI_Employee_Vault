@@ -1,15 +1,18 @@
+"""
+AI Employee Vault — Local Reasoner (Silver Tier)
+Fallback processor when Claude CLI is unavailable.
+Uses config-driven settings, weighted sensitivity scoring, and SLA tracking.
+"""
+
 import re
-import shutil
 from datetime import datetime
 from pathlib import Path
 
+from config_loader import load_config, get_path, get_sla_deadline, get_priority_from_keywords, log_event
+from sensitivity_scorer import score_sensitivity
+
 VAULT = Path(__file__).parent.resolve()
-INBOX = VAULT / "Needs_Action"
-TASKS = VAULT / "Tasks"
-PENDING = VAULT / "Pending_Approval"
-APPROVED = VAULT / "Approved"
-DONE = VAULT / "Done"
-LOGS = VAULT / "Logs"
+
 
 def read_frontmatter(path: Path) -> tuple[dict, str]:
     text = path.read_text(encoding="utf-8")
@@ -27,104 +30,139 @@ def read_frontmatter(path: Path) -> tuple[dict, str]:
             meta[k.strip()] = v.strip()
     return meta, body
 
-def classify_sensitivity(meta: dict, body: str) -> str:
-    if "sensitivity" in meta and meta["sensitivity"] not in ("", "none"):
-        return meta["sensitivity"]
-    b = body.lower()
-    if any(w in b for w in ["invoice", "payment", "refund", "$", "usd"]):
-        return "financial"
-    if any(w in b for w in ["email", "gmail", "whatsapp", "message", "client", "linkedin", "twitter", "facebook", "instagram"]):
-        return "external_communication"
-    if any(w in b for w in ["delete", "remove", "erase", "drop table"]):
-        return "data_deletion"
-    if any(w in b for w in ["permission", "access", "role", "credential"]):
-        return "access_change"
-    return "none"
 
-def write_log(title: str, details: list[str]) -> None:
-    LOGS.mkdir(parents=True, exist_ok=True)
-    f = LOGS / f"{datetime.now().strftime('%Y-%m-%d')}.md"
-    with f.open("a", encoding="utf-8") as fh:
-        fh.write(f"## {datetime.now().strftime('%H:%M')} - {title}\n")
-        for d in details:
-            fh.write(f"- {d}\n")
+def detect_priority(meta: dict, body: str) -> str:
+    """Detect priority from frontmatter or keyword auto-detection."""
+    cfg = load_config()
+    default_prio = cfg.get("priority", {}).get("default", "P2")
+    # Check frontmatter first
+    fm_prio = meta.get("priority", "")
+    if fm_prio.upper().startswith("P") and len(fm_prio) == 2:
+        return fm_prio.upper()
+    # Auto-detect from keywords
+    detected = get_priority_from_keywords(body)
+    if detected:
+        return detected
+    return default_prio
 
-def write_plan(stem: str, summary: str, sensitivity: str) -> None:
-    TASKS.mkdir(parents=True, exist_ok=True)
-    p = TASKS / f"plan_{stem}.md"
-    lines = []
-    lines.append(f"# Plan: {stem}")
-    lines.append("")
-    lines.append(f"## Summary")
-    lines.append(f"- {summary.strip()}")
-    lines.append("")
-    lines.append("## Classification")
-    lines.append(f"- Sensitivity: {sensitivity}")
-    lines.append("")
-    lines.append("## Steps")
-    lines.append("- Draft deliverable")
-    lines.append("- Route approvals if sensitive")
-    lines.append("- Save to /Done and update dashboard")
+
+def write_plan(stem: str, summary: str, sensitivity_result: dict, priority: str) -> None:
+    tasks_dir = get_path("tasks")
+    tasks_dir.mkdir(parents=True, exist_ok=True)
+    p = tasks_dir / f"plan_{stem}.md"
+    lines = [
+        f"# Plan: {stem}",
+        "",
+        "## Summary",
+        f"- {summary.strip()}",
+        "",
+        "## Classification",
+        f"- Priority: {priority}",
+        f"- Sensitivity Score: {sensitivity_result['score']}",
+        f"- Category: {sensitivity_result['category']}",
+        f"- Signals: {', '.join(sensitivity_result['signals']) or 'none'}",
+        f"- Requires Approval: {'Yes' if sensitivity_result['requires_approval'] else 'No'}",
+        "",
+        "## Steps",
+        "- Draft deliverable",
+        "- Route approvals if sensitive",
+        "- Save to /Done and update dashboard",
+    ]
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-def write_approval(stem: str, summary: str, sensitivity: str) -> None:
-    PENDING.mkdir(parents=True, exist_ok=True)
-    p = PENDING / f"approval_{stem}.md"
-    lines = []
-    lines.append(f"# Approval Request: {stem}")
-    lines.append("")
-    lines.append("## Why Sensitive")
-    lines.append(f"- Category: {sensitivity}")
-    lines.append("")
-    lines.append("## Proposed Plan")
-    lines.append("- Draft prepared per plan")
-    lines.append("- Await manager sign-off before sending/posting")
+
+def write_approval(stem: str, summary: str, sensitivity_result: dict, priority: str) -> None:
+    pending_dir = get_path("pending")
+    pending_dir.mkdir(parents=True, exist_ok=True)
+    p = pending_dir / f"approval_{stem}.md"
+    lines = [
+        f"# Approval Request: {stem}",
+        "",
+        "## Why Sensitive",
+        f"- Category: {sensitivity_result['category']}",
+        f"- Score: {sensitivity_result['score']}",
+        f"- Signals: {', '.join(sensitivity_result['signals'])}",
+        "",
+        f"## Priority: {priority}",
+        "",
+        "## Proposed Plan",
+        "- Draft prepared per plan",
+        "- Await manager sign-off before sending/posting",
+    ]
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-def write_done(stem: str, priority: str, sensitivity: str, body: str) -> None:
-    DONE.mkdir(parents=True, exist_ok=True)
-    p = DONE / f"{stem}.md"
-    lines = []
-    lines.append("---")
-    lines.append("type: task")
-    lines.append(f"priority: {priority}")
-    lines.append("status: completed")
-    lines.append(f"created: {datetime.now().strftime('%Y-%m-%d')}")
-    lines.append(f"completed_date: {datetime.now().strftime('%Y-%m-%d')}")
-    lines.append(f"sensitivity: {sensitivity}")
-    lines.append("approval: not_required")
-    lines.append("---")
-    lines.append("")
-    lines.append(body.strip() or f"# Completed: {stem}")
+
+def write_done(stem: str, priority: str, sensitivity_result: dict, body: str) -> None:
+    done_dir = get_path("done")
+    done_dir.mkdir(parents=True, exist_ok=True)
+    p = done_dir / f"{stem}.md"
+    now = datetime.now()
+    sla_deadline = get_sla_deadline(priority, now)
+    lines = [
+        "---",
+        "type: task",
+        f"priority: {priority}",
+        "status: completed",
+        f"created: {now.strftime('%Y-%m-%d')}",
+        f"completed_date: {now.strftime('%Y-%m-%d')}",
+        f"detected_at: {now.strftime('%Y-%m-%d %H:%M')}",
+        f"sla_deadline: {sla_deadline.strftime('%Y-%m-%d %H:%M')}",
+        f"sensitivity: {sensitivity_result['category']}",
+        f"sensitivity_score: {sensitivity_result['score']}",
+        "approval: not_required",
+        "---",
+        "",
+        body.strip() or f"# Completed: {stem}",
+    ]
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
 
 def process_task(path: Path) -> None:
+    cfg = load_config()
     stem = path.stem
     meta, body = read_frontmatter(path)
-    priority = meta.get("priority", "medium")
+    priority = detect_priority(meta, body)
     summary = meta.get("subject", meta.get("title", stem))
-    sensitivity = classify_sensitivity(meta, body)
-    write_plan(stem, summary, sensitivity)
-    if sensitivity != "none":
-        write_approval(stem, summary, sensitivity)
-        write_log("Approval Requested", [f"Task: {stem}", f"Sensitivity: {sensitivity}"])
+
+    # Use weighted sensitivity scorer
+    full_text = f"{summary} {body}"
+    sensitivity_result = score_sensitivity(full_text, cfg)
+
+    write_plan(stem, summary, sensitivity_result, priority)
+
+    if sensitivity_result["requires_approval"]:
+        write_approval(stem, summary, sensitivity_result, priority)
+        log_event("Approval Requested", [
+            f"Task: {stem}",
+            f"Priority: {priority}",
+            f"Sensitivity: {sensitivity_result['category']} (score: {sensitivity_result['score']})",
+        ])
     else:
-        write_done(stem, priority, sensitivity, f"# {summary}\n\nDraft prepared and completed.")
-        write_log("Task Completed", [f"Task: {stem}", "Routine"])
+        write_done(stem, priority, sensitivity_result, f"# {summary}\n\nDraft prepared and completed.")
+        log_event("Task Completed", [
+            f"Task: {stem}",
+            f"Priority: {priority}",
+            "Routine",
+        ])
+
     try:
         path.unlink()
     except Exception:
         pass
+
     try:
         from update_dashboard import write_dashboard
         write_dashboard()
     except Exception:
         pass
 
+
 def main() -> None:
-    INBOX.mkdir(parents=True, exist_ok=True)
-    for md in INBOX.glob("*.md"):
+    inbox = get_path("inbox")
+    inbox.mkdir(parents=True, exist_ok=True)
+    for md in inbox.glob("*.md"):
         process_task(md)
+
 
 if __name__ == "__main__":
     main()
