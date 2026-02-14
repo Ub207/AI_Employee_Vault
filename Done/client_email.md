@@ -1,10 +1,13 @@
 ---
 type: task
-priority: high
+priority: P1
 status: completed
 created: 2026-02-11
 completed_date: 2026-02-11
+detected_at: 2026-02-11 18:40
+sla_deadline: 2026-02-11 22:40
 sensitivity: external_communication
+sensitivity_score: 1.0
 approval: granted
 ---
 

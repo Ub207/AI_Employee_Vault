@@ -1,10 +1,13 @@
 ---
 type: task
-priority: medium
+priority: P2
 status: completed
 created: 2026-02-11
 completed_date: 2026-02-12
+detected_at: 2026-02-11 19:30
+sla_deadline: 2026-02-12 19:30
 sensitivity: none
+sensitivity_score: 0.0
 approval: granted
 ---
 

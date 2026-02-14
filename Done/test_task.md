@@ -1,8 +1,14 @@
 ---
 type: task
-priority: high
+priority: P1
 status: completed
+created: 2026-02-11
 completed_date: 2026-02-11
+detected_at: 2026-02-11 17:58
+sla_deadline: 2026-02-11 21:58
+sensitivity: financial
+sensitivity_score: 0.8
+approval: granted
 ---
 
 # Client Invoice Request

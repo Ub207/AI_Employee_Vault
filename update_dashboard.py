@@ -176,7 +176,9 @@ def write_dashboard() -> None:
 
     # --- Active Tasks ---
     lines.append("## Active Tasks")
-    active = list_files(tasks, 10)
+    done_names = {t["_name"] for t in done_meta}
+    active = [name for name in list_files(tasks, 20)
+              if name.replace("plan_", "", 1) not in done_names]
     if active:
         for a in active:
             lines.append(f"- {a}")
@@ -196,9 +198,12 @@ def write_dashboard() -> None:
 
     # --- Completed Today ---
     lines.append(f"## Completed Today ({today_str})")
-    completed_today = [p.stem for p in done.iterdir()] if done.exists() else []
-    for c in completed_today:
-        lines.append(f"- [x] {c}")
+    completed_today = [t["_name"] for t in done_meta if t.get("completed_date", "") == today_str]
+    if completed_today:
+        for c in completed_today:
+            lines.append(f"- [x] {c}")
+    else:
+        lines.append("- None")
     lines.append("")
 
     # --- Recent Activity ---
@@ -225,12 +230,15 @@ def write_dashboard() -> None:
     lines.append("## Lifetime Stats")
     lines.append("| Metric | Value |")
     lines.append("|--------|-------|")
-    total_received = count_files(needs_action) + count_files(done)
+    total_received = count_files(needs_action) + count_files(done) + count_files(pending)
     done_count = count_files(done)
+    sensitive_count = sum(1 for t in done_meta if t.get("sensitivity", "none") not in ("none", ""))
+    sensitive_count += count_files(pending)  # currently pending are also sensitive
+    approvals_requested = sum(1 for t in done_meta if t.get("approval", "") == "granted") + count_files(pending)
     lines.append(f"| Total tasks received | {total_received} |")
     lines.append(f"| Tasks completed | {done_count} |")
-    lines.append(f"| Sensitive actions flagged | {count_files(pending)} |")
-    lines.append(f"| Approvals requested | {count_files(pending)} |")
+    lines.append(f"| Sensitive actions flagged | {sensitive_count} |")
+    lines.append(f"| Approvals requested | {approvals_requested} |")
     lines.append(f"| Approvals granted | {count_files(approved)} |")
     lines.append(f"| Approvals rejected | {count_files(rejected)} |")
     rate = "0%" if total_received == 0 else f"{int(100 * done_count / total_received)}%"
