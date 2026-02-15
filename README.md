@@ -1,3 +1,9 @@
+![Hakathone-0](https://img.shields.io/badge/Hakathone--0-Digital%20FTE-black?style=for-the-badge)
+![Tier](https://img.shields.io/badge/Tier-Silver-C0C0C0?style=for-the-badge&logo=github)
+![Engine](https://img.shields.io/badge/Engine-Config%20Driven-blue?style=for-the-badge)
+![Governance](https://img.shields.io/badge/Governance-Active-green?style=for-the-badge)
+
+
 <div align="center">
 
 # AI Employee Vault
