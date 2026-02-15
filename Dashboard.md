@@ -27,12 +27,14 @@
 ## Recent Activity
 | Time | Action | Details |
 |------|--------|---------|
-| 11:28 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
-| 11:35 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
-| 11:35 - New Task Detected | File: test_watcher_check.md | Priority: P3 |
-| 11:35 - Error: Missing Claude CLI | Task: test_watcher_check |  |
 | 11:35 - Task Completed | Task: test_watcher_check | Priority: P3 |
 | 11:35 - Fallback Local Reasoner Executed | Task: test_watcher_check |  |
+| 11:57 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
+| 11:59 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
+| 11:59 - New Task Detected | File: smoke_test.md | Priority: P3 |
+| 11:59 - Error: Missing Claude CLI | Task: smoke_test |  |
+| 11:59 - Task Completed | Task: smoke_test | Priority: P3 |
+| 11:59 - Fallback Local Reasoner Executed | Task: smoke_test |  |
 
 ## Queue Summary
 | Folder | Count | Status |
