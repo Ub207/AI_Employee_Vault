@@ -1,15 +1,15 @@
-# Weekly Audit (2026-02-08 → 2026-02-14)
+# Weekly Audit (2026-02-09 → 2026-02-15)
 
 ## Summary
 | Metric | Value |
 |--------|-------|
-| Total Actions | 38 |
+| Total Actions | 51 |
 | Sensitive Flags | 9 |
 | Approvals Requested | 3 |
 | Approvals Granted | 5 |
-| Approvals Rejected | 0 |
-| Routine | 5 |
-| Errors | 4 |
+| Approvals Rejected | 1 |
+| Routine | 7 |
+| Errors | 7 |
 | Sla Reminders | 0 |
 | Sla Escalations | 0 |
 | Scheduled Tasks | 1 |
@@ -27,7 +27,7 @@
 | P0 | Critical | 0 |
 | P1 | High | 1 |
 | P2 | Medium | 2 |
-| P3 | Low | 1 |
+| P3 | Low | 5 |
 
 ## Activity Log
 - 17:56 - Vault Initialized
@@ -220,3 +220,52 @@
   - Approval: not_required
   - Moved to /Done
   - Note: task was stale (created 2026-02-13, processed 2026-02-14)
+- 18:54 - Weekly Audit & CEO Briefing Generated
+  - Period: 2026-02-08 to 2026-02-14
+  - Total actions: 38
+  - SLA compliance: 75% (9/12 on-time)
+  - Approvals: 5 granted, 0 rejected
+  - Errors: 4 (Claude CLI missing on 2026-02-12)
+  - Files: Weekly_Audit.md, CEO_Briefing.md
+- 11:28 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 11:35 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 11:35 - New Task Detected
+  - File: test_watcher_check.md
+  - Priority: P3
+  - SLA Deadline: 2026-02-18 11:35
+  - Path: D:\AI_Employee_Vault\Needs_Action\test_watcher_check.md
+- 11:35 - Error: Missing Claude CLI
+  - Task: test_watcher_check
+- 11:35 - Task Completed
+  - Task: test_watcher_check
+  - Priority: P3
+  - Routine
+- 11:35 - Fallback Local Reasoner Executed
+  - Task: test_watcher_check
+- 11:57 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 11:59 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 11:59 - New Task Detected
+  - File: smoke_test.md
+  - Priority: P3
+  - SLA Deadline: 2026-02-18 11:59
+  - Path: D:\AI_Employee_Vault\Needs_Action\smoke_test.md
+- 11:59 - Error: Missing Claude CLI
+  - Task: smoke_test
+- 11:59 - Task Completed
+  - Task: smoke_test
+  - Priority: P3
+  - Routine
+- 11:59 - Fallback Local Reasoner Executed
+  - Task: smoke_test

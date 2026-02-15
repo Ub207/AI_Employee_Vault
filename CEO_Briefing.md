@@ -1,16 +1,16 @@
-# CEO Briefing (2026-02-08 → 2026-02-14)
+# CEO Briefing (2026-02-09 → 2026-02-15)
 
 ## System Status
 - **Tier:** Silver
 - **Autonomy Level:** MEDIUM
 
 ## Highlights
-- Actions processed: 38
+- Actions processed: 51
 - Sensitive flags: 9
-- Approvals: 5 granted, 0 rejected
-- Routine tasks: 5
+- Approvals: 5 granted, 1 rejected
+- Routine tasks: 7
 - Scheduled tasks created: 1
-- Errors: 4
+- Errors: 7
 
 ## SLA Performance
 - Compliance: **75%** (9/12 on-time)
@@ -21,10 +21,10 @@
 - Critical (P0): 0
 - High (P1): 1
 - Medium (P2): 2
-- Low (P3): 1
+- Low (P3): 5
 
 ## Risks & Mitigations
-- 4 error(s) detected — review logs for details.
+- 7 error(s) detected — review logs for details.
 - Continue approval-first policy for external communications and financial actions.
 
 ## Next Week Goals
