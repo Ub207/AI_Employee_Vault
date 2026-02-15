@@ -345,4 +345,75 @@ This project is open source under the [MIT License](LICENSE).
 
 *An AI that works like an employee — prioritizes, plans, asks, executes, tracks SLA, and reports.*
 
-</div>
+</div> 
+
+---
+
+# 🏅 Hakathone-0 Tier Certification
+
+**Project:** Digital FTE (AI Employee Vault)  
+**Owner:** Ub207  
+**Certified Tier:** 🥉 Bronze — Fully Completed  
+**Current Tier:** 🥈 Silver (Governed Simulation Engine)  
+**Certification Date:** 2026-02-15  
+
+---
+
+## ✅ Bronze Tier Requirements (Completed)
+
+- File-based task intake (`/Needs_Action`)
+- Structured task planning (`/Tasks`)
+- Approval workflow (`/Pending_Approval`)
+- Completed lifecycle tracking (`/Done`)
+- Daily logging system (`/Logs`)
+- Config-driven behavior (`config.yaml`)
+- Dashboard metrics
+- SLA deadline tracking
+- Priority queue (P0–P3)
+- Sensitivity detection
+- Weekly audit generation
+- CEO briefing generation
+- System Capability Contract
+
+Status: **100% Complete**
+
+---
+
+## 🥈 Silver Tier Capabilities (Active)
+
+- Governance enforcement before execution
+- SLA compliance measurement
+- Priority normalization
+- Config-driven autonomy levels
+- Sensitivity-aware approval routing
+- Audit-grade traceability
+
+System operates in:
+**Simulation Mode (No real external API calls)**
+
+---
+
+## 🔒 Current Limitations
+
+- No real Gmail/WhatsApp/LinkedIn API integration
+- No external notifications for approvals
+- No database backend
+- No web dashboard UI
+- No concurrent processing
+
+---
+
+## 🚀 Gold Tier (Planned)
+
+- Real Gmail OAuth integration
+- WhatsApp Business API
+- Slack / LinkedIn automation
+- Database backend (PostgreSQL)
+- REST API layer
+- Web dashboard
+- Production deployment
+
+---
+
+**Digital FTE is now a Governed AI Employee System with measurable performance, auditability, and defined operational boundaries.**
+
