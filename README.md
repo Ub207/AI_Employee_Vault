@@ -168,6 +168,22 @@ AI_Employee_Vault/
 
 ---
 
+## Documentation
+
+Full system documentation lives in `/Docs/`:
+
+| Document | Description |
+|----------|-------------|
+| [System Capability Contract](Docs/System_Capability_Contract.md) | What the system can do, cannot do, and future upgrade paths |
+| [Architecture](Docs/Architecture.md) | Component inventory, data flow, technology stack, resilience model |
+| [Governance Model](Docs/Governance_Model.md) | Autonomy levels, sensitivity classification, enforcement points, risk mitigation |
+| [SLA and Priority Model](Docs/SLA_and_Priority_Model.md) | P0-P3 priority levels, SLA deadlines, compliance tracking, limitations |
+| [Approval Workflow](Docs/Approval_Workflow.md) | Sensitivity scoring engine, approval routing logic, worked examples |
+| [Observability and Audit](Docs/Observability_and_Audit.md) | Logging pipeline, dashboard, weekly audit, CEO briefing, gap analysis |
+| [Upgrade Roadmap](Docs/Upgrade_Roadmap.md) | Bronze → Silver → Gold tier progression, phased upgrade plan |
+
+---
+
 ## How It Works
 
 ### Task Lifecycle
