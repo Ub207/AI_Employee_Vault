@@ -2,3 +2,5 @@
 .claude/
 __pycache__/
 backend/venv/
+backend/.env
+backend/vault.db
