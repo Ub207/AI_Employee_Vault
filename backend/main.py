@@ -9,13 +9,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.config import settings
 from backend.database import init_db
-from backend.routes import health, tasks, approvals, logs
-from backend.integrations import gmail
+from backend.routes import health, tasks, approvals, logs, admin
+from backend.models.token import Token
+from backend.integrations import gmail, whatsapp, linkedin
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 _scheduler_task: asyncio.Task | None = None
+_gmail_task: asyncio.Task | None = None
 
 
 @asynccontextmanager
@@ -26,7 +28,7 @@ async def lifespan(app: FastAPI):
     logger.info("Database ready.")
 
     # Start scheduler background loop
-    global _scheduler_task
+    global _scheduler_task, _gmail_task
     try:
         from backend.services.scheduler_service import run_scheduler_loop
         _scheduler_task = asyncio.create_task(run_scheduler_loop())
@@ -34,15 +36,24 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Scheduler not started: {e}")
 
+    # Start Gmail polling background loop
+    try:
+        from backend.services.gmail_service import run_gmail_poll_loop
+        _gmail_task = asyncio.create_task(run_gmail_poll_loop())
+        logger.info("Gmail poller started.")
+    except Exception as e:
+        logger.warning(f"Gmail poller not started: {e}")
+
     yield
 
     # Shutdown
-    if _scheduler_task:
-        _scheduler_task.cancel()
-        try:
-            await _scheduler_task
-        except asyncio.CancelledError:
-            pass
+    for task in (_scheduler_task, _gmail_task):
+        if task:
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
     logger.info("Gold-tier backend shut down.")
 
 
@@ -66,3 +77,6 @@ app.include_router(tasks.router)
 app.include_router(approvals.router)
 app.include_router(logs.router)
 app.include_router(gmail.router)
+app.include_router(whatsapp.router)
+app.include_router(linkedin.router)
+app.include_router(admin.router)
