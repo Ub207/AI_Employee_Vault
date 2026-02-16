@@ -88,6 +88,29 @@ class SLAResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# --- Gmail ---
+
+class GmailStatusResponse(BaseModel):
+    configured: bool
+    connected: bool
+    email: str | None = None
+    last_polled_at: datetime | None = None
+    auto_reply_enabled: bool = False
+
+
+class GmailPollResponse(BaseModel):
+    processed: int = 0
+    tasks_created: int = 0
+    auto_replied: int = 0
+    errors: list[str] = []
+
+
+class GmailCallbackResponse(BaseModel):
+    status: str
+    email: str
+    message: str
+
+
 # --- Health ---
 
 class HealthResponse(BaseModel):
