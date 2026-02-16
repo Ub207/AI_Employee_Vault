@@ -71,7 +71,6 @@ async def _check_and_create_tasks() -> None:
 
             cron = croniter(cron_expr, last_run)
             next_run = cron.get_next(datetime)
-            # Ensure timezone-aware comparison
             if next_run.tzinfo is None:
                 next_run = next_run.replace(tzinfo=timezone.utc)
 
@@ -90,7 +89,7 @@ async def _check_and_create_tasks() -> None:
                 ))
                 state[name] = now.isoformat()
                 logger.info(f"Scheduler created task: {template}")
-
+        
         await db.commit()
 
     _save_state(state)
