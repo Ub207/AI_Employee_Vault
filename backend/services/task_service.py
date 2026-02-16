@@ -32,7 +32,7 @@ def _detect_priority(text: str, explicit: str) -> str:
 
 
 async def _log(db: AsyncSession, action: str, details: dict, task_id: int | None = None) -> None:
-    db.add(Log(action=action, details=json.dumps(details), task_id=task_id))
+    db.add(Log(action=action, details=json.dumps(details, default=str), task_id=task_id))
 
 
 async def create_task(db: AsyncSession, data: TaskCreate) -> Task:
@@ -120,6 +120,8 @@ async def update_task(db: AsyncSession, task_id: int, data: TaskUpdate) -> Task 
         setattr(task, field, value)
 
     await _log(db, "task_updated", update_fields, task_id)
+    await db.flush()
+    await db.refresh(task)
     return task
 
 
@@ -145,6 +147,8 @@ async def approve_task(db: AsyncSession, task_id: int, reason: str = "", decided
         decided_by=decided_by,
     ))
     await _log(db, "task_approved", {"reason": reason, "decided_by": decided_by}, task_id)
+    await db.flush()
+    await db.refresh(task)
     return task
 
 
@@ -161,6 +165,8 @@ async def reject_task(db: AsyncSession, task_id: int, reason: str = "", decided_
         decided_by=decided_by,
     ))
     await _log(db, "task_rejected", {"reason": reason, "decided_by": decided_by}, task_id)
+    await db.flush()
+    await db.refresh(task)
     return task
 
 
@@ -178,9 +184,17 @@ async def complete_task(db: AsyncSession, task_id: int) -> Task | None:
     sla = result.scalar_one_or_none()
     if sla:
         sla.completed_at = now
-        sla.met_sla = now <= sla.sla_deadline if sla.sla_deadline else True
+        if sla.sla_deadline:
+            deadline = sla.sla_deadline
+            if deadline.tzinfo is None:
+                deadline = deadline.replace(tzinfo=timezone.utc)
+            sla.met_sla = now <= deadline
+        else:
+            sla.met_sla = True
 
     await _log(db, "task_completed", {
         "met_sla": sla.met_sla if sla else None,
     }, task_id)
+    await db.flush()
+    await db.refresh(task)
     return task
