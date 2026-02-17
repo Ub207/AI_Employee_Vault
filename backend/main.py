@@ -21,6 +21,8 @@ _gmail_task: asyncio.Task | None = None
 _gmail_shutdown: asyncio.Event | None = None
 _whatsapp_task: asyncio.Task | None = None
 _whatsapp_shutdown: asyncio.Event | None = None
+_linkedin_task: asyncio.Task | None = None
+_linkedin_shutdown: asyncio.Event | None = None
 
 
 @asynccontextmanager
@@ -30,7 +32,7 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Database ready.")
 
-    global _scheduler_task, _gmail_task, _gmail_shutdown, _whatsapp_task, _whatsapp_shutdown
+    global _scheduler_task, _gmail_task, _gmail_shutdown, _whatsapp_task, _whatsapp_shutdown, _linkedin_task, _linkedin_shutdown
     try:
         from backend.services.scheduler_service import run_scheduler_loop
         _scheduler_task = asyncio.create_task(run_scheduler_loop())
@@ -56,14 +58,22 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"WhatsApp poller not started: {e}")
 
+    # Start LinkedIn token health polling loop
+    try:
+        from backend.services.linkedin_service import run_linkedin_poll_loop
+        _linkedin_shutdown = asyncio.Event()
+        _linkedin_task = asyncio.create_task(run_linkedin_poll_loop(_linkedin_shutdown))
+        logger.info("LinkedIn poller started.")
+    except Exception as e:
+        logger.warning(f"LinkedIn poller not started: {e}")
+
     yield
 
-    # Shutdown — signal both loops before cancelling tasks
-    if _gmail_shutdown:
-        _gmail_shutdown.set()
-    if _whatsapp_shutdown:
-        _whatsapp_shutdown.set()
-    for task in (_scheduler_task, _gmail_task, _whatsapp_task):
+    # Shutdown — signal all loops before cancelling tasks
+    for event in (_gmail_shutdown, _whatsapp_shutdown, _linkedin_shutdown):
+        if event:
+            event.set()
+    for task in (_scheduler_task, _gmail_task, _whatsapp_task, _linkedin_task):
         if task:
             task.cancel()
             try:

@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     GMAIL_AUTO_REPLY_ENABLED: bool = False
     GMAIL_MAX_EMAILS_PER_POLL: int = 10
 
+    # LinkedIn OAuth2
+    LINKEDIN_CLIENT_ID: str = ""
+    LINKEDIN_CLIENT_SECRET: str = ""
+    LINKEDIN_REDIRECT_URI: str = "http://localhost:8000/integrations/linkedin/callback"
+    LINKEDIN_POLL_INTERVAL_SECONDS: int = 120  # 2 minutes
+
     # Twilio / WhatsApp
     TWILIO_ACCOUNT_SID: str = ""
     TWILIO_AUTH_TOKEN: str = ""
