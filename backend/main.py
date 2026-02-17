@@ -11,13 +11,14 @@ from backend.config import settings
 from backend.database import init_db
 from backend.routes import health, tasks, approvals, logs, admin
 from backend.models.token import Token
-from backend.integrations import gmail, whatsapp, linkedin
+from backend.integrations import gmail_router, whatsapp, linkedin
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 _scheduler_task: asyncio.Task | None = None
 _gmail_task: asyncio.Task | None = None
+_gmail_shutdown: asyncio.Event | None = None
 
 
 @asynccontextmanager
@@ -27,8 +28,7 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Database ready.")
 
-    # Start scheduler background loop
-    global _scheduler_task, _gmail_task
+    global _scheduler_task, _gmail_task, _gmail_shutdown
     try:
         from backend.services.scheduler_service import run_scheduler_loop
         _scheduler_task = asyncio.create_task(run_scheduler_loop())
@@ -36,17 +36,20 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Scheduler not started: {e}")
 
-    # Start Gmail polling background loop
+    # Start Gmail polling loop with a dedicated shutdown event for clean exit
     try:
         from backend.services.gmail_service import run_gmail_poll_loop
-        _gmail_task = asyncio.create_task(run_gmail_poll_loop())
+        _gmail_shutdown = asyncio.Event()
+        _gmail_task = asyncio.create_task(run_gmail_poll_loop(_gmail_shutdown))
         logger.info("Gmail poller started.")
     except Exception as e:
         logger.warning(f"Gmail poller not started: {e}")
 
     yield
 
-    # Shutdown
+    # Shutdown — signal the Gmail loop first so it exits without waiting a full cycle
+    if _gmail_shutdown:
+        _gmail_shutdown.set()
     for task in (_scheduler_task, _gmail_task):
         if task:
             task.cancel()
@@ -76,7 +79,7 @@ app.include_router(health.router)
 app.include_router(tasks.router)
 app.include_router(approvals.router)
 app.include_router(logs.router)
-app.include_router(gmail.router)
+app.include_router(gmail_router.router)
 app.include_router(whatsapp.router)
 app.include_router(linkedin.router)
 app.include_router(admin.router)

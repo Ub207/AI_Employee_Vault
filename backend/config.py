@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     GMAIL_REDIRECT_URI: str = "http://localhost:8000/integrations/gmail/callback"
 
     # Gmail polling / auto-reply
-    GMAIL_POLL_INTERVAL_SECONDS: int = 300
+    GMAIL_POLL_INTERVAL_SECONDS: int = 120  # 2 minutes
     GMAIL_AUTO_REPLY_ENABLED: bool = False
     GMAIL_MAX_EMAILS_PER_POLL: int = 10
 
