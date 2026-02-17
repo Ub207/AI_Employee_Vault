@@ -24,6 +24,15 @@ class Settings(BaseSettings):
     GMAIL_AUTO_REPLY_ENABLED: bool = False
     GMAIL_MAX_EMAILS_PER_POLL: int = 10
 
+    # Twilio / WhatsApp
+    TWILIO_ACCOUNT_SID: str = ""
+    TWILIO_AUTH_TOKEN: str = ""
+    TWILIO_PHONE_NUMBER: str = ""
+    WHATSAPP_WEBHOOK_URL: str = ""  # Set to public URL (e.g. ngrok) for signature validation
+    WHATSAPP_AUTO_REPLY_ENABLED: bool = True
+    WHATSAPP_POLL_INTERVAL_SECONDS: int = 120  # 2 minutes
+    WHATSAPP_MAX_MESSAGES_PER_POLL: int = 20
+
     # CORS
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:8000"
 

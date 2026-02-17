@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 _scheduler_task: asyncio.Task | None = None
 _gmail_task: asyncio.Task | None = None
 _gmail_shutdown: asyncio.Event | None = None
+_whatsapp_task: asyncio.Task | None = None
+_whatsapp_shutdown: asyncio.Event | None = None
 
 
 @asynccontextmanager
@@ -28,7 +30,7 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Database ready.")
 
-    global _scheduler_task, _gmail_task, _gmail_shutdown
+    global _scheduler_task, _gmail_task, _gmail_shutdown, _whatsapp_task, _whatsapp_shutdown
     try:
         from backend.services.scheduler_service import run_scheduler_loop
         _scheduler_task = asyncio.create_task(run_scheduler_loop())
@@ -45,12 +47,23 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Gmail poller not started: {e}")
 
+    # Start WhatsApp polling loop (fallback for missed webhooks)
+    try:
+        from backend.services.whatsapp_service import run_whatsapp_poll_loop
+        _whatsapp_shutdown = asyncio.Event()
+        _whatsapp_task = asyncio.create_task(run_whatsapp_poll_loop(_whatsapp_shutdown))
+        logger.info("WhatsApp poller started.")
+    except Exception as e:
+        logger.warning(f"WhatsApp poller not started: {e}")
+
     yield
 
-    # Shutdown — signal the Gmail loop first so it exits without waiting a full cycle
+    # Shutdown — signal both loops before cancelling tasks
     if _gmail_shutdown:
         _gmail_shutdown.set()
-    for task in (_scheduler_task, _gmail_task):
+    if _whatsapp_shutdown:
+        _whatsapp_shutdown.set()
+    for task in (_scheduler_task, _gmail_task, _whatsapp_task):
         if task:
             task.cancel()
             try:
