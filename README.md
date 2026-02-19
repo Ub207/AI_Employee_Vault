@@ -1,9 +1,9 @@
-![Hakathone-0](https://img.shields.io/badge/Hakathone--0-Digital%20FTE-black?style=for-the-badge)
-![Tier](https://img.shields.io/badge/Tier-Platinum-E5E4E2?style=for-the-badge&logo=github)
-![Engine](https://img.shields.io/badge/Engine-Config%20Driven-blue?style=for-the-badge)
-![Governance](https://img.shields.io/badge/Governance-Active-green?style=for-the-badge)
-![Platforms](https://img.shields.io/badge/Platforms-7%20Integrated-blueviolet?style=for-the-badge)
-![Cloud](https://img.shields.io/badge/Cloud-Always--On-orange?style=for-the-badge)
+[![Hakathone-0](https://img.shields.io/badge/Hakathone--0-Digital%20FTE-black?style=for-the-badge)](https://github.com/Ub207/AI_Employee_Vault)
+[![Tier](https://img.shields.io/badge/Tier-Platinum-E5E4E2?style=for-the-badge&logo=github)](https://github.com/Ub207/AI_Employee_Vault)
+[![Engine](https://img.shields.io/badge/Engine-Config%20Driven-blue?style=for-the-badge)](https://github.com/Ub207/AI_Employee_Vault/blob/main/config.yaml)
+[![Governance](https://img.shields.io/badge/Governance-Active-green?style=for-the-badge)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Company_Handbook.md)
+[![Platforms](https://img.shields.io/badge/Platforms-7%20Integrated-blueviolet?style=for-the-badge)](https://github.com/Ub207/AI_Employee_Vault/blob/main/README.md#integration-map-all-tiers)
+[![Cloud](https://img.shields.io/badge/Cloud-Always--On-orange?style=for-the-badge)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Docs/Cloud_Deployment.md)
 
 
 <div align="center">
@@ -14,20 +14,20 @@
 
 A markdown-based autonomous AI employee system built on Obsidian.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Ub207/AI_Employee_Vault/blob/main/LICENSE)
 [![Built with Claude](https://img.shields.io/badge/Built%20with-Claude%20Code-blueviolet)](https://claude.ai)
 [![Obsidian](https://img.shields.io/badge/Platform-Obsidian-7C3AED)](https://obsidian.md)
 [![Markdown](https://img.shields.io/badge/Format-Markdown-000000)](https://commonmark.org)
-[![Tier](https://img.shields.io/badge/Tier-Silver-C0C0C0)]()
-[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-8-brightgreen)]()
-[![Approval Pipeline](https://img.shields.io/badge/Approval%20Pipeline-Active-orange)]()
-[![SLA Tracking](https://img.shields.io/badge/SLA%20Tracking-Enabled-blue)]()
+[![Tier](https://img.shields.io/badge/Tier-Platinum-E5E4E2)](https://github.com/Ub207/AI_Employee_Vault)
+[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-12-brightgreen)](https://github.com/Ub207/AI_Employee_Vault/tree/main/Done)
+[![Approval Pipeline](https://img.shields.io/badge/Approval%20Pipeline-Active-orange)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Docs/Approval_Workflow.md)
+[![SLA Tracking](https://img.shields.io/badge/SLA%20Tracking-Enabled-blue)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Docs/SLA_and_Priority_Model.md)
 
 ---
 
 **Drop a task. AI prioritizes it. Sensitive? It asks first. Then executes within SLA, logs, and reports.**
 
-[Getting Started](#getting-started) · [How It Works](#how-it-works) · [Silver Tier Features](#silver-tier-features) · [Demo](#demo-workflow) · [Screenshots](#screenshots)
+[Getting Started](#getting-started) · [How It Works](#how-it-works) · [Integration Map](#integration-map-all-tiers) · [Demo](#demo-workflow) · [Docs](https://github.com/Ub207/AI_Employee_Vault/tree/main/Docs)
 
 </div>
 
