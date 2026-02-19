@@ -1,8 +1,10 @@
-# AI Employee Vault — Silver Tier Configuration
+# AI Employee Vault — Gold/Platinum Tier Configuration
 # All system settings in one place. Every script reads from this file.
 
 vault_path: "."
 autonomy_level: MEDIUM  # LOW / MEDIUM / HIGH
+tier: gold              # bronze / silver / gold / platinum
+agent_role: local       # local / cloud (set to 'cloud' on VM)
 
 folders:
   inbox: Needs_Action
@@ -12,6 +14,8 @@ folders:
   rejected: Rejected
   done: Done
   logs: Logs
+  updates: Updates        # Cloud writes deltas here; Local merges into Dashboard
+  in_progress: In_Progress
 
 priority:
   P0:
@@ -45,6 +49,11 @@ sensitivity:
     credential: 0.9
     permission: 0.7
     access: 0.6
+    bank: 0.9
+    transfer: 0.85
+    wire: 0.9
+    paypal: 0.8
+    stripe: 0.8
   threshold: 0.6
   categories:
     - financial
@@ -65,12 +74,76 @@ watcher:
   timeout: 120
   poll_interval: 1
 
+# Cross-domain integration channels
+channels:
+  gmail:
+    watch_folder: Channels/Gmail_Inbox
+    priority: P1
+  whatsapp:
+    watch_folder: Channels/WhatsApp_Inbox
+    priority: P1
+  social_linkedin:
+    watch_folder: Channels/Social_Inbox
+    priority: P2
+  facebook:
+    watch_folder: Channels/Facebook_Inbox
+    priority: P2
+  twitter:
+    watch_folder: Channels/Twitter_Inbox
+    priority: P2
+
+# Odoo MCP server
+odoo_mcp:
+  url: "http://localhost:8010"
+  enabled: true
+
+# Ralph Wiggum loop settings
+ralph_wiggum:
+  max_iterations: 10
+  state_file: "/tmp/ralph_task.json"
+  completion_marker: "TASK_COMPLETE"
+
+# Platinum tier: vault sync
+vault_sync:
+  enabled: false       # set to true on Cloud VM
+  interval_seconds: 60
+  remote: "origin"
+  branch: "main"
+  safe_patterns:
+    - "Needs_Action/*.md"
+    - "Tasks/*.md"
+    - "Pending_Approval/**/*.md"
+    - "Approved/*.md"
+    - "Rejected/*.md"
+    - "Done/*.md"
+    - "Logs/*.md"
+    - "In_Progress/**/*.md"
+    - "Updates/*.md"
+    - "Plans/**/*.md"
+    - "config.yaml"
+
 scheduler:
   - name: weekly_report
     cron: "0 9 * * 5"
-    template: "Prepare weekly progress report"
+    template: "Prepare weekly progress report with SLA metrics and priority breakdown"
     priority: P2
+
   - name: daily_standup
     cron: "0 8 * * 1-5"
     template: "Generate daily standup summary"
     priority: P3
+
+  - name: ceo_briefing
+    cron: "0 7 * * 1"
+    template: "Generate Monday morning CEO briefing — audit last week's performance, pull Odoo accounting summary, review social media engagement"
+    priority: P1
+
+  - name: social_post_business
+    cron: "0 10 * * 1,3,5"
+    template: "Draft and prepare LinkedIn + Twitter business update post for approval"
+    priority: P2
+
+  - name: odoo_weekly_audit
+    cron: "0 22 * * 0"
+    template: "Run Odoo accounting audit — list unpaid invoices, draft follow-up emails for approval"
+    priority: P2

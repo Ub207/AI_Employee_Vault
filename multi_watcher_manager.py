@@ -7,7 +7,13 @@ VAULT_PATH = Path(__file__).parent.resolve()
 
 def main():
     procs = []
-    scripts = ["whatsapp_watcher.py", "gmail_watcher.py", "social_watcher.py"]
+    scripts = [
+        "whatsapp_watcher.py",
+        "gmail_watcher.py",
+        "social_watcher.py",
+        "facebook_watcher.py",
+        "twitter_watcher.py",
+    ]
     for s in scripts:
         p = subprocess.Popen([sys.executable, str(VAULT_PATH / s)], cwd=str(VAULT_PATH))
         procs.append(p)

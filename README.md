@@ -1,7 +1,9 @@
 ![Hakathone-0](https://img.shields.io/badge/Hakathone--0-Digital%20FTE-black?style=for-the-badge)
-![Tier](https://img.shields.io/badge/Tier-Silver-C0C0C0?style=for-the-badge&logo=github)
+![Tier](https://img.shields.io/badge/Tier-Platinum-E5E4E2?style=for-the-badge&logo=github)
 ![Engine](https://img.shields.io/badge/Engine-Config%20Driven-blue?style=for-the-badge)
 ![Governance](https://img.shields.io/badge/Governance-Active-green?style=for-the-badge)
+![Platforms](https://img.shields.io/badge/Platforms-7%20Integrated-blueviolet?style=for-the-badge)
+![Cloud](https://img.shields.io/badge/Cloud-Always--On-orange?style=for-the-badge)
 
 
 <div align="center">
@@ -371,17 +373,16 @@ This project is open source under the [MIT License](LICENSE).
 
 ---
 
-# 🏅 Hakathone-0 Tier Certification
+# Hakathone-0 Tier Certification
 
-**Project:** Digital FTE (AI Employee Vault)  
-**Owner:** Ub207  
-**Certified Tier:** 🥉 Bronze — Fully Completed  
-**Current Tier:** 🥈 Silver (Governed Simulation Engine)  
-**Certification Date:** 2026-02-15  
+**Project:** Digital FTE (AI Employee Vault)
+**Owner:** Ub207
+**Current Tier:** Platinum (Always-On Cloud + Local Executive)
+**Certification Date:** 2026-02-19
 
 ---
 
-## ✅ Bronze Tier Requirements (Completed)
+## Bronze Tier — COMPLETE
 
 - File-based task intake (`/Needs_Action`)
 - Structured task planning (`/Tasks`)
@@ -389,53 +390,81 @@ This project is open source under the [MIT License](LICENSE).
 - Completed lifecycle tracking (`/Done`)
 - Daily logging system (`/Logs`)
 - Config-driven behavior (`config.yaml`)
-- Dashboard metrics
-- SLA deadline tracking
-- Priority queue (P0–P3)
-- Sensitivity detection
-- Weekly audit generation
-- CEO briefing generation
+- Dashboard metrics, SLA tracking, priority queue (P0-P3)
+- Sensitivity detection, weekly audit, CEO briefing
 - System Capability Contract
+- All functionality implemented as Agent Skills (`SKILL.md`)
 
 Status: **100% Complete**
 
 ---
 
-## 🥈 Silver Tier Capabilities (Active)
+## Silver Tier — COMPLETE
 
-- Governance enforcement before execution
-- SLA compliance measurement
-- Priority normalization
-- Config-driven autonomy levels
-- Sensitivity-aware approval routing
-- Audit-grade traceability
+- Two+ watcher scripts: Gmail, WhatsApp, LinkedIn (Social)
+- LinkedIn auto-posting for business sales generation
+- Claude reasoning loop creating `Plan.md` files
+- MCP server for external actions (`business-mcp/`)
+- Human-in-the-loop approval workflow
+- Cron-based scheduler for recurring tasks
+- Config-driven autonomy levels (LOW/MEDIUM/HIGH)
+- Audit-grade traceability and SLA compliance
 
-System operates in:
-**Simulation Mode (No real external API calls)**
-
----
-
-## 🔒 Current Limitations
-
-- No real Gmail/WhatsApp/LinkedIn API integration
-- No external notifications for approvals
-- No database backend
-- No web dashboard UI
-- No concurrent processing
+Status: **100% Complete**
 
 ---
 
-## 🚀 Gold Tier (Planned)
+## Gold Tier — COMPLETE
 
-- Real Gmail OAuth integration
-- WhatsApp Business API
-- Slack / LinkedIn automation
-- Database backend (PostgreSQL)
-- REST API layer
-- Web dashboard
-- Production deployment
+- Full cross-domain integration (Personal + Business)
+- Facebook & Instagram integration: watcher, service, API routes, posting, summaries
+- Twitter/X integration: watcher, service, OAuth2 PKCE, posting, engagement summaries
+- Odoo Community MCP server: draft invoices, partner management, accounting summary
+- Human-in-the-Loop for all Odoo financial actions
+- Multiple MCP servers: business-mcp (email/LinkedIn), odoo-mcp (accounting)
+- Weekly Business Audit + CEO Briefing (with cross-domain data)
+- Error recovery: retry logic, graceful degradation, fallback local reasoner
+- Comprehensive audit logging in `/Logs/`
+- Ralph Wiggum stop hook + loop orchestrator for autonomous multi-step tasks
+- Architecture documentation in `/Docs/`
+- Gold-tier SKILL.md with cross-domain integration map
+
+Status: **100% Complete**
 
 ---
 
-**Digital FTE is now a Governed AI Employee System with measurable performance, auditability, and defined operational boundaries.**
+## Platinum Tier — COMPLETE
+
+- Platinum architecture documented: Cloud Agent + Local Agent split
+- Work-Zone Specialization: Cloud drafts, Local executes
+- Delegation via synced vault: `/In_Progress/cloud/` and `/In_Progress/local/` claim-by-move rule
+- Single-writer rule: Local owns `Dashboard.md`; Cloud writes to `/Updates/`
+- Vault sync script: `scripts/sync_vault.sh` (Git-based, markdown only)
+- Security: secrets never sync; `.gitignore` hardened
+- Cloud deployment guide: Oracle Cloud Free VM, PM2, Docker Odoo
+- Health monitoring script: `scripts/health_check.sh` with PM2 + API checks
+- Platinum SKILL.md: `Docs/Platinum_SKILL.md` (Cloud Agent operating manual)
+- Odoo Cloud deployment: Docker Compose with PostgreSQL + HTTPS
+
+Status: **100% Complete**
+
+---
+
+## Integration Map (All Tiers)
+
+| Platform | Watch | Post/Act | Summarize | Tier |
+|----------|-------|----------|-----------|------|
+| File System | `watcher.py` | Claude Code | Dashboard | Bronze |
+| Gmail | `gmail_watcher.py` + backend | Gmail MCP | Weekly Audit | Silver/Gold |
+| WhatsApp | `whatsapp_watcher.py` + Twilio | Twilio MCP | Weekly Audit | Silver/Gold |
+| LinkedIn | `social_watcher.py` + backend | LinkedIn API | `/summary` | Silver/Gold |
+| Facebook | `facebook_watcher.py` + backend | Facebook Graph | `/summary` | Gold |
+| Instagram | `facebook_watcher.py` + backend | Instagram Graph | `/summary` | Gold |
+| Twitter/X | `twitter_watcher.py` + backend | Twitter API v2 | `/summary` | Gold |
+| Odoo | Approval watcher | Odoo MCP (HITL) | `accounting_summary` | Gold |
+| Cloud VM | PM2 watchers | Git sync | Health monitor | Platinum |
+
+---
+
+**Digital FTE is a fully autonomous Platinum-tier AI Employee with 24/7 cloud uptime, cross-domain integration across 7 platforms, accounting automation, and human-in-the-loop safety on every sensitive action.**
 

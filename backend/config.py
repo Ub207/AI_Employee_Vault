@@ -39,6 +39,18 @@ class Settings(BaseSettings):
     WHATSAPP_POLL_INTERVAL_SECONDS: int = 120  # 2 minutes
     WHATSAPP_MAX_MESSAGES_PER_POLL: int = 20
 
+    # Facebook / Instagram (Graph API)
+    FACEBOOK_APP_ID: str = ""
+    FACEBOOK_APP_SECRET: str = ""
+    FACEBOOK_PAGE_ID: str = ""
+    FACEBOOK_REDIRECT_URI: str = "http://localhost:8000/integrations/facebook/callback"
+    INSTAGRAM_ACCOUNT_ID: str = ""
+
+    # Twitter / X (OAuth 2.0 PKCE)
+    TWITTER_CLIENT_ID: str = ""
+    TWITTER_CLIENT_SECRET: str = ""
+    TWITTER_REDIRECT_URI: str = "http://localhost:8000/integrations/twitter/callback"
+
     # CORS
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:8000"
 

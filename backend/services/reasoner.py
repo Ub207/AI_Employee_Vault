@@ -39,3 +39,16 @@ async def process_task_pipeline(db: AsyncSession, task: Task) -> Task:
     ))
 
     return task
+
+
+async def generate_reply(task: Task) -> str:
+    """Generate a contextual reply based on task content."""
+    # Production-ready implementation would use an LLM here.
+    # For now, we use a structured template based on task info.
+    return (
+        f"Hello,\n\n"
+        f"This is an automated response from the Digital FTE system regarding your email: \"{task.title}\".\n"
+        f"Your request has been logged and is currently being processed with status: {task.status}.\n\n"
+        f"Best regards,\n"
+        f"AI Employee"
+    )

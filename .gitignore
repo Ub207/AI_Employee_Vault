@@ -1,6 +1,66 @@
+# ─── IDE & Editor ────────────────────────────────────────────────────────────
 .obsidian/
 .claude/
+*.swp
+*.swo
+
+# ─── Python ──────────────────────────────────────────────────────────────────
 __pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
 backend/venv/
+*.egg-info/
+dist/
+build/
+
+# ─── Node / JS ───────────────────────────────────────────────────────────────
+node_modules/
+.next/
+*.tsbuildinfo
+
+# ─── Secrets & Credentials (NEVER COMMIT) ───────────────────────────────────
+*.env
+.env
+.env.*
+!.env.example
+Secrets/
 backend/.env
+odoo-mcp/.env
+secrets.json
+credentials.json
+token.json
+*_token.json
+*session*
+whatsapp_session/
+*_session/
+
+# ─── Databases ───────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
 backend/vault.db
+digital_fte/backend/app.db
+
+# ─── Logs & Cache ────────────────────────────────────────────────────────────
+*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# ─── OS Files ────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Temp / Ralph Wiggum state ──────────────────────────────────────────────
+/tmp/ralph_task.json
+scheduler_state.json
+
+# ─── Screenshots ─────────────────────────────────────────────────────────────
+screenshots/*.png
+screenshots/*.jpg
+screenshots/*.jpeg

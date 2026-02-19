@@ -147,8 +147,13 @@ class TaskHandler(FileSystemEventHandler):
         while attempts < max_attempts:
             attempts += 1
             try:
+                # Resolve LLM command from environment, fallback to 'claude'
+                from dotenv import load_dotenv
+                load_dotenv(VAULT_PATH / "Secrets" / ".env")
+                llm_cmd = os.getenv("CLAUDE_CMD", "").strip()
+                cmd = (llm_cmd.split() + ["-p", prompt]) if llm_cmd else ["claude", "-p", prompt]
                 result = subprocess.run(
-                    ["claude", "-p", prompt],
+                    cmd,
                     cwd=str(VAULT_PATH),
                     capture_output=True,
                     text=True,

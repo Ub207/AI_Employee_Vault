@@ -11,7 +11,7 @@ from backend.config import settings
 from backend.database import init_db
 from backend.routes import health, tasks, approvals, logs, admin
 from backend.models.token import Token
-from backend.integrations import gmail_router, whatsapp, linkedin
+from backend.integrations import gmail_router, whatsapp, linkedin, facebook, twitter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -105,4 +105,6 @@ app.include_router(logs.router)
 app.include_router(gmail_router.router)
 app.include_router(whatsapp.router)
 app.include_router(linkedin.router)
+app.include_router(facebook.router)
+app.include_router(twitter.router)
 app.include_router(admin.router)
