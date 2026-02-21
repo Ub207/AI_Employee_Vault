@@ -215,8 +215,9 @@ Include in the briefing:
 8. **Always update the dashboard** — keep status current
 9. **Track SLA deadlines** — flag overdue tasks
 10. **Use Ralph Wiggum for multi-step tasks** — don't give up mid-flow
-11. **Cross-domain awareness** — check if one event triggers multiple actions
-12. **When in doubt, request approval** — better safe than sorry
+11. **Cross-domain awareness** — check if one event triggers multiple actions. For example, a successful Odoo payment should trigger a WhatsApp "thank you" confirmation and a LinkedIn "deal closed" post (drafted for approval).
+12. **Mandatory Approval (Platinum)** — All external communications (emails, social posts, WhatsApp messages) REQUIRE human sign-off via the `/Pending_Approval` workflow, regardless of autonomy level.
+13. **When in doubt, request approval** — better safe than sorry
 
 ---
 

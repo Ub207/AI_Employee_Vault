@@ -105,21 +105,35 @@ class TaskHandler(FileSystemEventHandler):
         self.process_task(event.src_path, filename)
 
     def process_task(self, filepath, filename):
-        """Trigger Claude Code to process the new task."""
         cfg = load_config()
         retry_cfg = cfg.get("retry", {})
         watcher_cfg = cfg.get("watcher", {})
-        task_name = Path(filename).stem
+
         priority = read_task_priority(Path(filepath))
+        task_name = Path(filename).stem
         detected_at = datetime.now()
+        timestamp = detected_at.strftime("%H:%M:%S")
         sla_deadline = get_sla_deadline(priority, detected_at)
 
+        in_progress_dir = get_path("in_progress") / "local"
+        in_progress_dir.mkdir(parents=True, exist_ok=True)
+        new_path = in_progress_dir / filename
+
+        try:
+            # Move file to In_Progress/local/ to "claim" it
+            os.rename(filepath, new_path)
+            filepath = str(new_path)
+        except Exception as e:
+            print(f"[{timestamp}] ERROR: Could not claim task {filename}: {e}")
+            return
+
         prompt = (
-            f"A new task has arrived in /Needs_Action: {filename}\n"
+            f"A new task has arrived and been claimed: {filename}\n"
+            f"Location: In_Progress/local/{filename}\n"
             f"Priority: {priority} | SLA Deadline: {sla_deadline.strftime('%Y-%m-%d %H:%M')}\n"
             f"Detected at: {detected_at.strftime('%Y-%m-%d %H:%M:%S')}\n"
             f"Read SKILL.md for your processing instructions, then:\n"
-            f"1. Read the task at Needs_Action/{filename}\n"
+            f"1. Read the task at In_Progress/local/{filename}\n"
             f"2. Check Company_Handbook.md for sensitivity\n"
             f"3. Create a plan in /Tasks/plan_{task_name}.md\n"
             f"4. If sensitive, create approval request in /Pending_Approval\n"
@@ -130,12 +144,11 @@ class TaskHandler(FileSystemEventHandler):
             f"Process this task now."
         )
 
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        log_event("New Task Detected", [
+        log_event("Task Claimed", [
             f"File: {filename}",
             f"Priority: {priority}",
             f"SLA Deadline: {sla_deadline.strftime('%Y-%m-%d %H:%M')}",
-            f"Path: {filepath}",
+            f"New Path: {filepath}",
         ])
 
         attempts = 0
@@ -163,6 +176,7 @@ class TaskHandler(FileSystemEventHandler):
                 print(result.stdout[:500] if result.stdout else "(no output)")
                 if result.stderr:
                     print(f"  Errors: {result.stderr[:200]}")
+
                 log_event(
                     "Task Processed",
                     [

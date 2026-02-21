@@ -5,6 +5,7 @@ Uses config-driven settings, weighted sensitivity scoring, and SLA tracking.
 """
 
 import re
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -145,6 +146,13 @@ def process_task(path: Path) -> None:
             "Routine",
         ])
 
+    # No longer unlinking here safely. 
+    # In a real multi-agent scenario, the agent would either move to Done or keep it in In_Progress.
+    # For local_reasoner, we assume it's completing the task or requesting approval.
+    # If it requested approval, the file technically stays in Needs_Action/In_Progress?
+    # Actually, the protocol says remove from Needs_Action. 
+    # If it's in In_Progress, we can leave it there as an audit or delete it.
+    # Let's delete it if it's done or approval requested, to match existing behavior of "clearing the inbox".
     try:
         path.unlink()
     except Exception:
@@ -159,9 +167,18 @@ def process_task(path: Path) -> None:
 
 def main() -> None:
     inbox = get_path("inbox")
+    in_progress = get_path("in_progress") / "local"
     inbox.mkdir(parents=True, exist_ok=True)
+    in_progress.mkdir(parents=True, exist_ok=True)
+    
     for md in inbox.glob("*.md"):
-        process_task(md)
+        # Claim file
+        new_path = in_progress / md.name
+        try:
+            os.rename(md, new_path)
+            process_task(new_path)
+        except Exception as e:
+            print(f"Error claiming {md.name}: {e}")
 
 
 if __name__ == "__main__":
