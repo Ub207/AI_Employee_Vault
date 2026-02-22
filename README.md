@@ -19,7 +19,8 @@ A markdown-based autonomous AI employee system built on Obsidian.
 [![Obsidian](https://img.shields.io/badge/Platform-Obsidian-7C3AED)](https://obsidian.md)
 [![Markdown](https://img.shields.io/badge/Format-Markdown-000000)](https://commonmark.org)
 [![Tier](https://img.shields.io/badge/Tier-Platinum-E5E4E2)](https://github.com/Ub207/AI_Employee_Vault)
-[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-12-brightgreen)](https://github.com/Ub207/AI_Employee_Vault/tree/main/Done)
+[![Tasks Completed](https://img.shields.io/badge/Tasks%20Completed-17-brightgreen)](https://github.com/Ub207/AI_Employee_Vault/tree/main/Done)
+[![Hackathon-0](https://img.shields.io/badge/Hackathon--0-COMPLETE%20✓-success?style=flat)](https://github.com/Ub207/AI_Employee_Vault/tree/main/Done)
 [![Approval Pipeline](https://img.shields.io/badge/Approval%20Pipeline-Active-orange)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Docs/Approval_Workflow.md)
 [![SLA Tracking](https://img.shields.io/badge/SLA%20Tracking-Enabled-blue)](https://github.com/Ub207/AI_Employee_Vault/blob/main/Docs/SLA_and_Priority_Model.md)
 
@@ -238,41 +239,59 @@ Context modifiers adjust scores: "email" + "client" = higher score, "email" + "i
 
 ## Demo Workflow
 
-This vault ships with **8 completed tasks** showing both workflow paths:
+This vault ships with **17 completed tasks** demonstrating the full 4-tier progression:
 
-### Task 1: Client Invoice (Sensitive Path)
+### Hackathon-0 Tier Demos (All 4 Complete ✅)
+
+#### Bronze — Research Task (Routine, Auto-Executed)
 | Step | Action |
 |------|--------|
-| Detected | `test_task.md` — "Client asked for invoice" |
-| Priority | P2 (default) — SLA: 24 hours |
-| Sensitivity | Score: 0.8 — Category: financial |
-| Result | Blocked → Approval requested → Approved → Completed |
+| Source | Manual drop |
+| Task | Research "Claude Code" → write 3-line summary |
+| Priority | P3 — SLA: 72 hours |
+| Sensitivity | Score: 0.0 — ROUTINE |
+| Result | Auto-executed → `Done/bronze_demo.md` |
 
-### Task 2: Weekly Report (Routine Path)
+#### Silver — Client Refund + Email (Cross-Domain: Odoo + Gmail)
 | Step | Action |
 |------|--------|
-| Detected | `weekly_report.md` — "Prepare weekly progress report" |
-| Priority | P2 (default) — SLA: 24 hours |
-| Sensitivity | Score: 0.0 — No signals |
-| Result | Auto-processed → Completed within SLA |
+| Source | Gmail — Ahmed Khan refund request |
+| Task | Rs. 50,000 refund credit note + confirmation email |
+| Priority | P1 (ASAP keyword) — SLA: 4 hours |
+| Sensitivity | Score: 0.8 — financial + external_communication |
+| Result | HITL approval gate → Odoo draft + Gmail draft → `Done/silver_demo.md` |
 
-### Task 3: Urgent Client Email (Priority + Sensitive)
+#### Gold — Deal Win (Cross-Domain: Odoo + Twitter + LinkedIn + Gmail)
 | Step | Action |
 |------|--------|
-| Detected | `client_email.md` — "Send follow-up email to client ASAP" |
-| Priority | P1 (auto-detected: "ASAP") — SLA: 4 hours |
-| Sensitivity | Score: 1.1 — Category: external_communication |
-| Result | Blocked → Draft prepared → Approval requested → Completed |
+| Source | WhatsApp — Hamza Butt deal confirmation |
+| Task | Rs. 1,20,000 invoice + social announcement + onboarding email |
+| Priority | P2 — SLA: 24 hours |
+| Sensitivity | Score: 0.8 — financial + 3x external_communication |
+| Result | HITL approval gate → 4-platform orchestration → `Done/gold_demo.md` |
 
-### Final Stats
+#### Platinum — Investor Email P0 (Cloud Agent → Local Agent)
+| Step | Action |
+|------|--------|
+| Source | Gmail — investor@example.com (Rs. 5,00,000 inquiry) |
+| Task | Investor reply + Odoo CRM lead + CEO Briefing update |
+| Priority | P0 Critical — SLA: 1 hour |
+| Sensitivity | Score: 0.9 — HIGHEST (financial + external investor) |
+| Detected by | Cloud Agent (24/7 — local machine was offline) |
+| Result | Cloud→Local handoff → HITL approval → 3-domain execution → `Done/platinum_demo_gmail.md` |
+
+### Hackathon-0 Final Stats
 
 | Metric | Value |
 |--------|-------|
-| Total tasks processed | 8 |
-| Sensitive actions flagged | 3 |
-| Approvals requested | 3 |
-| Approvals granted | 2 |
+| Total tasks processed | 17 |
+| Hackathon tier demos | 4 / 4 ✅ |
+| Sensitive actions flagged | 8 |
+| Approvals requested | 6 |
+| Approvals granted | 6 |
 | Completion rate | 100% |
+| SLA compliance | 100% (all demos) |
+| Platforms integrated | 7 (Gmail, WhatsApp, Twitter, LinkedIn, Facebook, Instagram, Odoo) |
 
 ---
 
@@ -365,9 +384,11 @@ This project is open source under the [MIT License](LICENSE).
 
 <div align="center">
 
-**Built with Claude Code** · Hakathone-0 · Silver Tier · Digital FTE
+**Built with Claude Code** · Hackathon-0 COMPLETE ✅ · Platinum Tier · Digital FTE
 
 *An AI that works like an employee — prioritizes, plans, asks, executes, tracks SLA, and reports.*
+
+*Bronze → Silver → Gold → Platinum — all 4 tiers demonstrated end-to-end on 2026-02-22.*
 
 </div> 
 
@@ -379,6 +400,7 @@ This project is open source under the [MIT License](LICENSE).
 **Owner:** Ub207
 **Current Tier:** Platinum (Always-On Cloud + Local Executive)
 **Certification Date:** 2026-02-19
+**Hackathon-0 Demo Completed:** 2026-02-22 ✅
 
 ---
 
