@@ -1,291 +1,941 @@
-# Weekly Audit (2026-02-09 → 2026-02-15)
+# Weekly Audit (2026-02-16 → 2026-02-22)
 
 ## Summary
 | Metric | Value |
 |--------|-------|
-| Total Actions | 56 |
-| Sensitive Flags | 9 |
-| Approvals Requested | 3 |
-| Approvals Granted | 5 |
-| Approvals Rejected | 1 |
-| Routine | 7 |
-| Errors | 7 |
+| Total Actions | 419 |
+| Sensitive Flags | 0 |
+| Approvals Requested | 0 |
+| Approvals Granted | 0 |
+| Approvals Rejected | 0 |
+| Routine | 2 |
+| Errors | 385 |
 | Sla Reminders | 0 |
 | Sla Escalations | 0 |
-| Scheduled Tasks | 1 |
+| Scheduled Tasks | 0 |
 
 ## SLA Compliance
 | Metric | Value |
 |--------|-------|
-| Tasks with SLA tracking | 12 |
-| On-time completions | 9 |
-| Compliance rate | 75% |
+| Tasks with SLA tracking | 15 |
+| On-time completions | 11 |
+| Compliance rate | 73% |
 
 ## Priority Breakdown
 | Priority | Label | Count |
 |----------|-------|-------|
 | P0 | Critical | 0 |
-| P1 | High | 1 |
-| P2 | Medium | 2 |
-| P3 | Low | 5 |
+| P1 | High | 0 |
+| P2 | Medium | 4 |
+| P3 | Low | 0 |
 
 ## Activity Log
-- 17:56 - Vault Initialized
-  - Set up folder structure: `/Tasks`, `/Done`, `/Logs`, `/Notes`
-  - AI Employee is online and ready for instructions
-- 17:58 - Checked /Needs_Action
-  - Found 1 task: `test_task.md` — Client asked for invoice (high priority)
-  - Created plan at `/Tasks/plan_test_task.md`
-  - Awaiting user input before proceeding (sensitive action)
-- 18:15 - Processed /Needs_Action
-  - Received authorization to process all pending tasks
-  - `test_task.md` (Client Invoice Request):
-  - Sensitive action flagged per Company Handbook
-  - Approval received from manager
-  - Invoice drafted with demo data
-  - Task moved from `/Needs_Action` to `/Done/test_task.md`
-  - Plan at `/Tasks/plan_test_task.md` marked completed
-  - `/Needs_Action` is now empty (0 pending tasks)
-- 18:16 - Dashboard Updated
-  - Updated `/Dashboard.md` with current status
-  - All queues clear
-- 18:30 - New Task Detected
-  - Found `weekly_report.md` in `/Needs_Action` (medium priority)
-  - "Prepare a weekly progress report"
-  - Checked Company Handbook — not a sensitive action, no approval needed
-  - Created plan at `/Tasks/plan_weekly_report.md`
-- 18:31 - Weekly Report Completed
-  - Gathered data from `/Done` and `/Logs`
-  - Drafted weekly progress report
-  - Task moved from `/Needs_Action` to `/Done/weekly_report.md`
-  - Plan marked completed
-  - `/Needs_Action` is now empty (0 pending tasks)
-- 18:32 - Dashboard Updated
-  - Updated `/Dashboard.md` with current status
-  - Full workflow test complete
-- 18:40 - New Task Detected (SENSITIVE)
-  - Found `client_email.md` in `/Needs_Action` (high priority)
-  - "Send a follow-up email to the client"
-  - Checked Company Handbook:
-  - MATCH: "Never send emails without approval" (Core Rule)
-  - MATCH: "External communications" (Sensitive Action)
-  - Created plan at `/Tasks/plan_client_email.md`
-  - Drafted email for manager review
-  - Moved to `/Pending_Approval/client_email.md`
-  - **BLOCKED** — Cannot proceed without manager approval
-- 18:45 - Approval Granted
-  - Manager approved `client_email.md`
-  - Moved from `/Pending_Approval` to `/Approved`
-  - Email sent per approved draft
-  - Task moved to `/Done/client_email.md`
-  - Plan at `/Tasks/plan_client_email.md` marked completed
-  - `/Needs_Action` is now empty (0 pending tasks)
-  - `/Pending_Approval` is now empty (0 pending approvals)
-- 19:00 - New Task Detected
-  - Found `onboard_new_hire.md` in `/Needs_Action` (high priority)
-  - "Prepare onboarding checklist for new developer"
-  - Checked Company Handbook — preparing a checklist is internal/routine, not sensitive
-  - Created plan at `/Tasks/plan_onboard_new_hire.md`
-- 19:01 - Onboarding Checklist Completed
-  - Drafted full checklist: accounts, tools, codebase walkthrough, first-week schedule
-  - Task moved from `/Needs_Action` to `/Done/onboard_new_hire.md`
-  - Plan marked completed
-  - `/Needs_Action` is now empty (0 pending tasks)
-- 07:50 - Bronze Tier Components Created
-  - Created `SKILL.md` — AI agent procedural knowledge document
-  - Created `watcher.py` — Python watchdog file watcher for `/Needs_Action`
-  - Installed `watchdog` Python package
-  - Bronze tier requirements now complete
-- 07:55 - Task Processed: Research Competitor Pricing
-  - Found `research_competitor.md` in `/Needs_Action` (medium priority)
-  - "Research and summarize pricing tiers of top 3 competitors"
-  - Checked Company Handbook — not sensitive (internal research only)
-  - Autonomy Level LOW — approval was requested on 2026-02-11
-  - Approval granted by manager on 2026-02-12
-  - Created plan at `/Tasks/plan_research_competitor.md`
-  - Executed: researched 3 competitors (Jasper AI, Copy.ai, Writer.com)
-  - Created pricing comparison table and key takeaways
-  - Approval record moved to `/Approved/research_competitor.md`
-  - Task moved to `/Done/research_competitor.md`
-  - `/Needs_Action` is now empty (0 pending tasks)
-  - `/Pending_Approval` is now empty (0 pending approvals)
-- 07:56 - Dashboard Updated
-  - Updated `/Dashboard.md` with current status
-  - All queues clear
-- 08:10 - New Task: Social Media Content Strategy
-  - Dropped `social_media_strategy.md` in `/Needs_Action` (high priority)
-  - "Create 1-week social media content strategy for AI SaaS product launch"
-  - Pending processing
-- 08:15 - Task Processed: Matric Physics Exam Preparation
-  - Found `matric_physics_prep.md` in `/Needs_Action` (high priority)
-  - "10th Class Physics exam preparation — Punjab Board"
-  - Checked Company Handbook — not sensitive (educational/internal)
-  - No approval required (routine task)
-  - Created plan at `/Tasks/plan_matric_physics_prep.md`
-  - Executed: created full study material
-  - Chapter-wise short questions + answers (Ch 10-15)
-  - 6 solved numerical problems
-  - 20 MCQs with answers
-  - Important definitions table
-  - 5-day revision plan
-  - Task moved to `/Done/matric_physics_prep.md`
-- 08:16 - Dashboard Updated
-  - Updated `/Dashboard.md` with current status
-  - `/Needs_Action`: 1 task remaining (social_media_strategy)
-- 08:25 - Task Processed: Social Media Content Strategy
-  - Found `social_media_strategy.md` in `/Needs_Action` (high priority)
-  - "Create 1-week social media content strategy for AI SaaS product launch"
-  - Checked Company Handbook — not sensitive (internal content planning, no external posting)
-  - No approval required (routine task)
-  - Created plan at `/Tasks/plan_social_media_strategy.md`
-  - Executed: created full 7-day content calendar
-  - 3 platforms: LinkedIn, Twitter/X, Instagram
-  - 21 posts total (3 per day x 7 days)
-  - Each post: caption, hashtags, posting time, format
-  - Content themes: teaser, problem, launch, education, testimonial, BTS, CTA
-  - Summary tables: weekly overview, best posting times, content mix
-  - Task moved to `/Done/social_media_strategy.md`
-  - `/Needs_Action` is now empty (0 pending tasks)
-- 08:26 - Dashboard Updated
-  - Updated `/Dashboard.md` with current status
-  - All queues clear — 7 tasks completed lifetime
-- 22:44 - Process Manager
-  - Starting process manager for watcher.py
-- 22:44 - New Task Detected
-  - File: demo_task.md
-  - Path: D:\AI_Employee_Vault\Needs_Action\demo_task.md
-- 22:44 - Error: Missing Claude CLI
-  - Task: demo_task
-- 22:49 - New Task Detected
-  - File: WhatsApp_Inbox-event-224927.md
-  - Path: D:\AI_Employee_Vault\Needs_Action\WhatsApp_Inbox-event-224927.md
-- 22:49 - Error: Missing Claude CLI
-  - Task: WhatsApp_Inbox-event-224927
-- 22:49 - New Task Detected
-  - File: Gmail_Inbox-event-224933.md
-  - Path: D:\AI_Employee_Vault\Needs_Action\Gmail_Inbox-event-224933.md
-- 22:49 - Error: Missing Claude CLI
-  - Task: Gmail_Inbox-event-224933
-- 22:49 - New Task Detected
-  - File: Social_Inbox-event-224938.md
-  - Path: D:\AI_Employee_Vault\Needs_Action\Social_Inbox-event-224938.md
-- 22:49 - Error: Missing Claude CLI
-  - Task: Social_Inbox-event-224938
-- 22:51 - Task Completed
-  - Task: demo_task
-  - Routine
-- 22:51 - Approval Requested
-  - Task: Gmail_Inbox-event-224933
-  - Sensitivity: external_communication
-- 22:51 - Approval Requested
-  - Task: Social_Inbox-event-224938
-  - Sensitivity: external_communication
-- 22:51 - Approval Requested
-  - Task: WhatsApp_Inbox-event-224927
-  - Sensitivity: external_communication
-- 08:24 - Scheduled Task Created
-  - Job: daily_standup
-  - Priority: P3
-  - File: daily_standup_20260213.md
-- 18:26 - System Audit — Issues Fixed
-  - Issue 2: Standardized Done frontmatter priority to P-notation (P1/P2)
-  - Issue 3: Added detected_at, sla_deadline, sensitivity_score to all Done files
-  - Issue 4: Fixed lifetime sensitive count to use historical data, not point-in-time
-  - Issue 5: Fixed Completed Today to filter by completed_date == today
-  - Issue 6: Fixed Active Tasks to exclude plans for already-completed tasks
-  - Issue 7: Fixed research_competitor metadata inconsistency
-  - SLA compliance now measurable: 100% (8/8 on-time)
-  - Priority distribution now accurate: P1=5, P2=3
-- 18:28 - Approval Granted: Gmail_Inbox-event-224933
-  - Task: Respond to partner email — Monday meeting agenda
+- 09:46 - Server Error (GET)
+  - [WinError 10053] An established connection was aborted by the software in your host machine
+- 19:20 - Task Completed
+  - Task: manual_verify_claim
   - Priority: P2
-  - Sensitivity: external_communication (score: 0.6)
-  - Approved by manager
-  - Moved to /Approved and /Done
-- 18:28 - Approval Granted: Social_Inbox-event-224938
-  - Task: Update LinkedIn post caption with launch date
+  - Routine
+- 16:31 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:31 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:31 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:31 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:32 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Watcher Started
+  - Tier: Silver
+  - Autonomy: MEDIUM
+  - Poll interval: 1s
+- 16:33 - Task Claimed
+  - File: FACEBOOK_demo_comment.md
   - Priority: P2
-  - Sensitivity: external_communication (score: 0.6)
-  - Approved by manager
-  - Moved to /Approved and /Done
-- 18:28 - Approval Granted: WhatsApp_Inbox-event-224927
-  - Task: Share updated proposal with Client A
-  - Priority: P1
-  - Sensitivity: external_communication (score: 0.6)
-  - Approved by manager
-  - Moved to /Approved and /Done
-- 18:28 - Task Completed: daily_standup_20260213
-  - Task: Daily standup summary (scheduled, P3)
-  - Sensitivity: none (routine)
-  - Approval: not_required
-  - Moved to /Done
-  - Note: task was stale (created 2026-02-13, processed 2026-02-14)
-- 18:54 - Weekly Audit & CEO Briefing Generated
-  - Period: 2026-02-08 to 2026-02-14
-  - Total actions: 38
-  - SLA compliance: 75% (9/12 on-time)
-  - Approvals: 5 granted, 0 rejected
-  - Errors: 4 (Claude CLI missing on 2026-02-12)
-  - Files: Weekly_Audit.md, CEO_Briefing.md
-- 11:28 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 11:35 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 11:35 - New Task Detected
-  - File: test_watcher_check.md
-  - Priority: P3
-  - SLA Deadline: 2026-02-18 11:35
-  - Path: D:\AI_Employee_Vault\Needs_Action\test_watcher_check.md
-- 11:35 - Error: Missing Claude CLI
-  - Task: test_watcher_check
-- 11:35 - Task Completed
-  - Task: test_watcher_check
-  - Priority: P3
+  - SLA Deadline: 2026-02-22 16:33
+  - New Path: D:\AI_Employee_Vault\In_Progress\local\FACEBOOK_demo_comment.md
+- 16:33 - Task Completed
+  - Task: TWITTER_demo_mention
+  - Priority: P2
   - Routine
-- 11:35 - Fallback Local Reasoner Executed
-  - Task: test_watcher_check
-- 11:57 - Watcher Started
+- 16:33 - Task Processed
+  - Task: FACEBOOK_demo_comment
+  - Priority: P2
+  - Attempts: 1
+  - Result: processed by Claude
+- 16:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 16:35 - Watcher Started
   - Tier: Silver
   - Autonomy: MEDIUM
   - Poll interval: 1s
-- 11:59 - Watcher Started
-  - Tier: Silver
+- 16:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 17:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:10 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 18:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 19:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:10 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 20:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:10 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 21:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:10 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 22:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:00 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:01 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:02 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:03 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:04 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:05 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:06 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:07 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:08 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:09 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:10 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:11 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:12 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:13 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:14 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:15 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:16 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:17 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:18 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:19 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:20 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:21 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:22 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:23 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:24 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:25 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:26 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:27 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:28 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:29 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:30 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:31 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:32 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:33 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:34 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:35 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:36 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:37 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:38 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:39 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:40 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:41 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:42 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:43 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:44 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:45 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:46 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:47 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:48 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:49 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:50 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:51 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:52 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:53 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:54 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:55 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:56 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:57 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:58 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- 23:59 - Scheduler Error
+  - can't compare offset-naive and offset-aware datetimes
+- Platinum Upgrade Session
+  - Start: 2026-02-22
+  - Tier Target: Platinum
   - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 11:59 - New Task Detected
-  - File: smoke_test.md
-  - Priority: P3
-  - SLA Deadline: 2026-02-18 11:59
-  - Path: D:\AI_Employee_Vault\Needs_Action\smoke_test.md
-- 11:59 - Error: Missing Claude CLI
-  - Task: smoke_test
-- 11:59 - Task Completed
-  - Task: smoke_test
-  - Priority: P3
-  - Routine
-- 11:59 - Fallback Local Reasoner Executed
-  - Task: smoke_test
-- 12:08 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 13:44 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 15:38 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 15:43 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
-- 17:51 - Watcher Started
-  - Tier: Silver
-  - Autonomy: MEDIUM
-  - Poll interval: 1s
+- Actions
+  - Odoo MCP (Node) added at MCP/odoo_mcp.js
+  - Weekly briefing script added at scripts/weekly_brief.py
+  - Sample accounting CSV created at Accounting/transactions.csv
+  - Env configured for CLAUDE_CMD and ANTHROPIC_API_KEY
+  - Ralph loop verified for local_reasoner fallback
+- Notes
+  - Windows Claude CLI not supported; using Anthropic runner and local_reasoner
+  - Odoo installation scripted; human approval required for posting invoices
+- Next
+  - Start Odoo MCP (Python or Node)
+  - Run weekly_brief and weekly_audit
+  - Configure Git sync to cloud VM
+- Weekly Briefing Generated
+  - Revenue: 155000.0
+  - Expenses: 5000.0
+  - Source: D:\AI_Employee_Vault\Accounting\transactions.csv

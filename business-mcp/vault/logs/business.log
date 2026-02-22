@@ -1,0 +1,3 @@
+[2026-02-16 15:47:21] INFO | action=deal_closed | status=OK | detail=Closed Q1 partnership with Acme Corp
+[2026-02-16 15:47:21] INFO | action=send_email | status=ERROR | detail=SMTP credentials not configured in .env
+[2026-02-16 15:47:28] INFO | action=create_linkedin_post | status=ERROR | detail=LinkedIn credentials not configured in .env
