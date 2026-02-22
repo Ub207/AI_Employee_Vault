@@ -1,0 +1,9 @@
+{
+  "event_id": "gmail-pt-001",
+  "source": "gmail",
+  "from": "investor@example.com",
+  "subject": "Investment Inquiry — Rs. 5,00,000 funding",
+  "body": "We are interested in investing Rs. 5,00,000 in your company. Please send us your pitch deck and financial projections. We need a response by EOD tomorrow.",
+  "received_at": "2026-02-22T10:00:00",
+  "priority_hint": "urgent"
+}

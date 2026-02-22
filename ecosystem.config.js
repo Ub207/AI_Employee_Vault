@@ -7,11 +7,11 @@ module.exports = {
       cwd: "D:/AI_Employee_Vault",
       watch: false,
       autorestart: true,
-      restart_delay: 10000,   // crash ke baad 10s wait karke restart
+      restart_delay: 10000,
       max_restarts: 10,
       log_file: "D:/AI_Employee_Vault/Logs/whatsapp_watcher.log",
       error_file: "D:/AI_Employee_Vault/Logs/whatsapp_watcher_error.log",
-      time: true,             // timestamps log mein
+      time: true,
     },
     {
       name: "file-watcher",
@@ -25,6 +25,23 @@ module.exports = {
       log_file: "D:/AI_Employee_Vault/Logs/file_watcher.log",
       error_file: "D:/AI_Employee_Vault/Logs/file_watcher_error.log",
       time: true,
-    }
+    },
+    {
+      name: "odoo-mcp",
+      script: "MCP/odoo_mcp.js",
+      interpreter: "node",
+      cwd: "D:/AI_Employee_Vault",
+      watch: false,
+      autorestart: true,
+      restart_delay: 5000,
+      max_restarts: 10,
+      env: {
+        ODOO_MOCK: "true",
+        MCP_PORT: "3000",
+      },
+      log_file: "D:/AI_Employee_Vault/Logs/odoo_mcp.log",
+      error_file: "D:/AI_Employee_Vault/Logs/odoo_mcp_error.log",
+      time: true,
+    },
   ]
 };
