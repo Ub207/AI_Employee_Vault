@@ -1,7 +1,7 @@
 # AI Employee Dashboard
 
 ## Status
-**Digital FTE Online** | Silver Tier | Autonomy: MEDIUM | Last active: 2026-02-21
+**Digital FTE Online** | Gold Tier | Autonomy: MEDIUM | Last active: 2026-02-22
 
 ## Priority Distribution
 - P0 (Critical):  0
@@ -19,14 +19,18 @@
 - None — all tasks processed
 
 ## Pending Approvals
-- None
+- None ✅
 
-## Completed Today (2026-02-21)
-- [x] TWITTER_demo_mention
+## Completed Today (2026-02-22)
+- [x] bronze_demo (P3 | ROUTINE | Bronze Tier Demo)
+- [x] silver_demo (P1 | SENSITIVE 0.8 | Rs. 50,000 refund | Odoo + Gmail | APPROVED ✅)
+- [x] gold_demo (P2 | SENSITIVE 0.8 | Rs. 1,20,000 deal | Odoo + Twitter + LinkedIn + Gmail | APPROVED ✅)
+- [x] platinum_demo_gmail (P0 | SENSITIVE 0.9 | Rs. 5,00,000 investor | Cloud Agent → Local | Gmail + Odoo + CEO Briefing | APPROVED ✅)
 
 ## Recent Activity
 | Time | Action | Details |
 |------|--------|---------|
+| 11:00 - Platinum Upgrade | Odoo MCP (Node) added | scripts/weekly_brief.py created |
 | 16:33 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
 | 16:33 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
 | 16:33 - Watcher Started | Tier: Silver | Autonomy: MEDIUM |
@@ -43,14 +47,14 @@
 | `/Pending_Approval` | 0 | Empty |
 | `/Approved` | 5 | Records |
 | `/Tasks` | 13 | Active plans |
-| `/Done` | 14 | Completed |
+| `/Done` | 17 | Completed |
 | `/Rejected` | 0 | Empty |
 
 ## Lifetime Stats
 | Metric | Value |
 |--------|-------|
-| Total tasks received | 14 |
-| Tasks completed | 14 |
+| Total tasks received | 17 |
+| Tasks completed | 17 |
 | Sensitive actions flagged | 5 |
 | Approvals requested | 6 |
 | Approvals granted | 5 |
