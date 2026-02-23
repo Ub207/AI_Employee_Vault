@@ -16,6 +16,12 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Force UTF-8 output on Windows (handles Urdu/Arabic/emoji in messages)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 # ── Config ────────────────────────────────────────────────────────────────────
 
 VAULT_PATH    = Path(__file__).parent.resolve()
@@ -36,7 +42,11 @@ MAX_RETRIES    = 3    # reconnect attempts on crash
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def log(msg: str):
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
+    try:
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
+    except UnicodeEncodeError:
+        safe = msg.encode("ascii", errors="replace").decode("ascii")
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] {safe}", flush=True)
 
 
 def is_keyword_match(text: str) -> bool:
@@ -77,7 +87,8 @@ approval: not_required
 - [ ] Draft reply (requires approval before sending)
 - [ ] Log outcome in /Logs/{datetime.now().strftime('%Y-%m-%d')}.md
 """
-    filepath.write_text(content, encoding="utf-8")
+    with open(filepath, "w", encoding="utf-8", errors="replace", newline="\n") as fh:
+        fh.write(content)
     log(f"Task created: {filepath.name}")
     return filepath
 
@@ -108,6 +119,34 @@ class WhatsAppWatcher:
             ],
         )
         self.page = self.browser.pages[0] if self.browser.pages else self.browser.new_page()
+
+    def dismiss_use_here_dialog(self):
+        """Click 'Use Here' if WhatsApp shows 'open in another window' dialog."""
+        try:
+            result = self.page.evaluate("""
+                () => {
+                    // Find any button whose text includes 'Use Here' or 'Use here'
+                    const btns = Array.from(document.querySelectorAll('button, [role="button"]'));
+                    for (const btn of btns) {
+                        if (/use here/i.test(btn.textContent)) {
+                            btn.click();
+                            return 'clicked: ' + btn.textContent.trim().substring(0, 30);
+                        }
+                    }
+                    // Also check for dialog with 'open in another' and click OK/Continue
+                    const dialog = document.querySelector('[role="dialog"]');
+                    if (dialog && /another/i.test(dialog.textContent)) {
+                        const btn = dialog.querySelector('button');
+                        if (btn) { btn.click(); return 'dialog_btn: ' + btn.textContent.trim().substring(0,20); }
+                    }
+                    return null;
+                }
+            """)
+            if result:
+                log(f"Dismissed dialog: {result}")
+                time.sleep(3)
+        except Exception:
+            pass
 
     def wait_for_login(self):
         """Navigate to WhatsApp Web and wait until logged in."""
@@ -172,55 +211,198 @@ class WhatsAppWatcher:
             sys.exit(1)
 
     def get_unread_messages(self) -> list[dict]:
-        """Chat list se unread messages fetch karo."""
+        """Chat list se unread messages fetch karo (JS-based, multi-selector fallback)."""
         messages = []
         try:
-            # Unread badge wale chats dhundo
-            unread_chats = self.page.query_selector_all(
-                '[data-testid="chat-list"] [data-testid="cell-frame-container"]'
-            )
+            result = self.page.evaluate("""
+                () => {
+                    const debug = [];
+                    const msgs = [];
 
-            for chat in unread_chats:
-                try:
-                    # Unread count badge check karo
-                    badge = chat.query_selector('[data-testid="icon-unread-count"]')
-                    if not badge:
-                        continue
+                    // Pane detection — try every known selector for old + new WhatsApp Web
+                    const paneSelectors = [
+                        '#pane-side',
+                        '#side',
+                        '[data-testid="chat-list"]',
+                        'div[aria-label="Chat list"]',
+                        'div[aria-label="Chats"]',
+                        '[role="grid"]',
+                        '[role="list"]',
+                    ];
+                    let pane = null;
+                    for (const sel of paneSelectors) {
+                        pane = document.querySelector(sel);
+                        if (pane) { debug.push('PANE:' + sel); break; }
+                    }
+                    if (!pane) {
+                        // Dump #app structure — aria-labels and roles of first 3 levels
+                        const app = document.querySelector('#app');
+                        const ariaEls = app
+                            ? Array.from(app.querySelectorAll('[aria-label]'))
+                                  .slice(0, 20)
+                                  .map(e => e.tagName + '[' + e.getAttribute('aria-label').substring(0,30) + ']')
+                                  .join('|')
+                            : 'NO_APP';
+                        const roleEls = app
+                            ? Array.from(app.querySelectorAll('[role]'))
+                                  .slice(0, 20)
+                                  .map(e => e.tagName + '[role=' + e.getAttribute('role') + ']')
+                                  .join('|')
+                            : '';
+                        debug.push('NO_PANE. aria=' + ariaEls);
+                        debug.push('roles=' + roleEls);
+                        return { msgs, debug };
+                    }
 
-                    # Chat name
-                    name_el = chat.query_selector('[data-testid="cell-frame-title"] span')
-                    chat_name = name_el.inner_text() if name_el else "Unknown"
+                    // Try badge selectors in priority order
+                    const badgeSelectors = [
+                        '[data-testid="icon-unread-count"]',
+                        '[data-icon="unread-count"]',
+                        'span[aria-label*="unread"]',
+                        'div[aria-label*="unread"]',
+                    ];
 
-                    # Last message preview
-                    msg_el = chat.query_selector('[data-testid="last-msg-status"] ~ span, '
-                                                  '[data-testid="cell-frame-primary-detail"]')
-                    message = msg_el.inner_text() if msg_el else ""
+                    let badges = [];
+                    for (const sel of badgeSelectors) {
+                        const found = pane.querySelectorAll(sel);
+                        if (found.length > 0) {
+                            badges = Array.from(found);
+                            debug.push('BADGE_SEL:' + sel + ' count:' + found.length);
+                            break;
+                        }
+                    }
 
-                    # Unique key — dedup ke liye
-                    key = f"{chat_name}:{message}"
-                    if key in self.seen_messages:
-                        continue
+                    if (badges.length === 0) {
+                        // Dump aria-labels and roles inside pane for diagnosis
+                        const ariaEls = Array.from(pane.querySelectorAll('[aria-label]'))
+                            .slice(0, 20)
+                            .map(e => e.tagName + '[' + e.getAttribute('aria-label').substring(0,40) + ']')
+                            .join('|');
+                        const roleEls = Array.from(pane.querySelectorAll('[role]'))
+                            .slice(0, 10)
+                            .map(e => e.getAttribute('role'))
+                            .join('|');
+                        // Also look for any spans with pure number content (unread count)
+                        const numSpans = Array.from(pane.querySelectorAll('span'))
+                            .filter(s => /^\d+$/.test(s.textContent.trim()))
+                            .slice(0, 10)
+                            .map(s => 'span[' + s.textContent.trim() + ']class=' + s.className.substring(0,30))
+                            .join('|');
+                        debug.push('NO_BADGES. aria=' + ariaEls);
+                        debug.push('roles=' + roleEls);
+                        if (numSpans) debug.push('numspans=' + numSpans);
+                        return { msgs, debug };
+                    }
 
-                    if is_keyword_match(message) or is_keyword_match(chat_name):
-                        messages.append({
-                            "chat_name": chat_name,
-                            "sender": chat_name,
-                            "message": message,
-                            "key": key,
-                        })
+                    // Strategy: find all role=row containers, check each for a badge
+                    const rows = Array.from(pane.querySelectorAll('[role="row"]'));
+                    debug.push('ROWS:' + rows.length);
 
-                except Exception:
+                    const processedRows = new Set();
+                    for (const badge of badges) {
+                        // Walk up to find the enclosing row
+                        let row = badge;
+                        let found = false;
+                        for (let i = 0; i < 15; i++) {
+                            row = row.parentElement;
+                            if (!row) break;
+                            if (row.getAttribute('role') === 'row' ||
+                                row.getAttribute('role') === 'listitem' ||
+                                row.getAttribute('data-testid') === 'cell-frame-container') {
+                                found = true;
+                                break;
+                            }
+                        }
+                        // Fallback: if no role=row found, go 6 levels up from badge
+                        if (!found || !row) {
+                            row = badge;
+                            for (let i = 0; i < 6; i++) {
+                                row = row.parentElement;
+                                if (!row) break;
+                            }
+                        }
+                        if (!row || processedRows.has(row)) continue;
+                        processedRows.add(row);
+
+                        // Chat name: first span with meaningful text
+                        let name = 'Unknown';
+                        const allSpans = Array.from(row.querySelectorAll('span'));
+                        for (const sp of allSpans) {
+                            const t = sp.textContent.trim();
+                            // Skip empty, single chars, pure numbers (those are badges)
+                            if (t.length > 1 && !/^\d+$/.test(t) && !sp.querySelector('span')) {
+                                name = t;
+                                break;
+                            }
+                        }
+
+                        // Last message: second meaningful span
+                        let message = '';
+                        let nameFound = false;
+                        for (const sp of allSpans) {
+                            const t = sp.textContent.trim();
+                            if (t.length > 1 && !/^\d+$/.test(t) && !sp.querySelector('span')) {
+                                if (!nameFound) { nameFound = true; continue; }
+                                message = t;
+                                break;
+                            }
+                        }
+
+                        debug.push('CHAT name=' + name.substring(0,20).replace(/[^\x20-\x7E]/g,'?') + ' msg=' + message.substring(0,20).replace(/[^\x20-\x7E]/g,'?'));
+                        msgs.push({ name, message });
+                    }
+
+                    return { msgs, debug };
+                }
+            """)
+
+            for d in result.get("debug", []):
+                log(f"[DOM] {d}")
+
+            for item in result.get("msgs", []):
+                chat_name = item.get("name", "Unknown")
+                message   = item.get("message", "")
+                key       = f"{chat_name}:{message}"
+                if key in self.seen_messages:
                     continue
+                messages.append({
+                    "chat_name": chat_name,
+                    "sender":    chat_name,
+                    "message":   message,
+                    "key":       key,
+                })
 
         except Exception as e:
             log(f"Error reading chats: {e}")
 
         return messages
 
+    def wait_for_chat_list(self, timeout_s: int = 60) -> bool:
+        """Block until #pane-side (chat list) is visible, or timeout."""
+        log("Waiting for chat list pane to load ...")
+        deadline = time.time() + timeout_s
+        while time.time() < deadline:
+            # Dismiss "open in another window" popup each cycle
+            self.dismiss_use_here_dialog()
+            try:
+                found = self.page.evaluate(
+                    "() => !!(document.querySelector('#pane-side') || "
+                    "document.querySelector('#side') || "
+                    "document.querySelector('div[aria-label=\"Chat list\"]'))"
+                )
+                if found:
+                    log("Chat list pane ready.")
+                    return True
+            except Exception:
+                pass
+            time.sleep(2)
+        log("Chat list pane not found after timeout — proceeding anyway.")
+        return False
+
     def run_loop(self):
         """Main polling loop."""
         log(f"WhatsApp Watcher active — checking every {CHECK_INTERVAL}s")
-        log(f"Keywords: {', '.join(KEYWORDS)}")
+        self.wait_for_chat_list(timeout_s=60)
 
         while True:
             try:
@@ -232,15 +414,18 @@ class WhatsAppWatcher:
                 messages = self.get_unread_messages()
 
                 for msg in messages:
-                    create_task_file(
-                        sender=msg["sender"],
-                        message=msg["message"],
-                        chat_name=msg["chat_name"],
-                    )
-                    self.seen_messages.add(msg["key"])
+                    try:
+                        create_task_file(
+                            sender=msg["sender"],
+                            message=msg["message"],
+                            chat_name=msg["chat_name"],
+                        )
+                        self.seen_messages.add(msg["key"])
+                    except Exception as me:
+                        log(f"Task create error: {me}")
 
                 if not messages:
-                    log("No new keyword messages.")
+                    log("No new unread messages.")
 
             except Exception as e:
                 log(f"Loop error: {e}")

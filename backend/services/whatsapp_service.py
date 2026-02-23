@@ -149,6 +149,7 @@ async def process_incoming_message(
     Returns a result dict with keys: processed, task_id, auto_replied, skipped_duplicate.
     """
     from backend.services.task_service import create_task
+    from backend.services.reasoner import process_task_pipeline
 
     result = {
         "processed": False,
@@ -163,20 +164,34 @@ async def process_incoming_message(
         result["skipped_duplicate"] = True
         return result
 
-    # ── Create task ──────────────────────────────────────────────────────────
+    # ── Create task → AI pipeline ────────────────────────────────────────────
     task_data = TaskCreate(
         title=f"[WhatsApp] Message from {sender}",
         body=f"Sender: {sender}\n\n{body}",
         source="whatsapp",
     )
     task = await create_task(db, task_data)
+    task = await process_task_pipeline(db, task)  # re-score + route (handles AUTONOMY_MODE)
     result["task_id"] = task.id
 
     # Record SID immediately so a crash mid-flow can't reprocess later
     if message_sid:
         await _mark_processed(db, message_sid)
 
-    # ── Auto-reply ───────────────────────────────────────────────────────────
+    await _log(db, "whatsapp_message_ingested", {
+        "message_sid": message_sid,
+        "sender": sender,
+        "task_id": task.id,
+        "task_status": task.status,
+        "sensitivity_score": task.sensitivity_score,
+        "sensitivity_category": task.sensitivity_category,
+    }, task.id)
+
+    # ── Auto-reply (only when enabled) ───────────────────────────────────────
+    if not settings.WHATSAPP_AUTO_REPLY_ENABLED:
+        result["processed"] = True
+        return result
+
     if task.status == TaskStatus.IN_PROGRESS.value:
         reply = (
             "Thanks for your message! I've logged this as a task "
@@ -186,10 +201,8 @@ async def process_incoming_message(
         if sent:
             result["auto_replied"] = True
             await _log(db, "whatsapp_auto_reply_sent", {
-                "message_sid": message_sid,
                 "to": sender,
                 "task_id": task.id,
-                "reply": reply,
             }, task.id)
 
     elif task.status == TaskStatus.AWAITING_APPROVAL.value:
@@ -197,19 +210,15 @@ async def process_incoming_message(
             "I've received your request. Since it involves sensitive actions, "
             "I'll need supervisor approval before proceeding."
         )
-        await send_message(sender, reply)
-        await _log(db, "whatsapp_approval_required", {
-            "message_sid": message_sid,
+        sent = await send_message(sender, reply)
+        if sent:
+            result["auto_replied"] = True
+        await _log(db, "whatsapp_approval_task_created", {
             "sender": sender,
             "task_id": task.id,
+            "sensitivity_score": task.sensitivity_score,
+            "sensitivity_category": task.sensitivity_category,
         }, task.id)
-
-    await _log(db, "whatsapp_message_ingested", {
-        "message_sid": message_sid,
-        "sender": sender,
-        "task_id": task.id,
-        "task_status": task.status,
-    }, task.id)
 
     result["processed"] = True
     return result
