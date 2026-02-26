@@ -43,5 +43,21 @@ module.exports = {
       error_file: "D:/AI_Employee_Vault/Logs/odoo_mcp_error.log",
       time: true,
     },
+    {
+      name: "vault-sync",
+      script: "scripts/vault_sync_loop.js",
+      interpreter: "node",
+      cwd: "D:/AI_Employee_Vault",
+      watch: false,
+      autorestart: true,
+      restart_delay: 5000,
+      max_restarts: 20,
+      env: {
+        SYNC_INTERVAL: "60",
+      },
+      log_file: "D:/AI_Employee_Vault/Logs/vault_sync.log",
+      error_file: "D:/AI_Employee_Vault/Logs/vault_sync_error.log",
+      time: true,
+    },
   ]
 };

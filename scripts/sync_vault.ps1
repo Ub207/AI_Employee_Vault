@@ -1,4 +1,4 @@
-# Vault Sync Script — Platinum Tier
+# Vault Sync Script - Platinum Tier
 # Syncs vault to GitHub (private repo) for Cloud Agent access.
 # Run: powershell -ExecutionPolicy Bypass -File scripts/sync_vault.ps1
 # Or via Task Scheduler every 5 minutes.
@@ -16,7 +16,7 @@ $gitignorePath = "$VAULT\.gitignore"
 $protectedPatterns = @(".env", "*.token", ".whatsapp_session", "Secrets/", "*.key")
 foreach ($p in $protectedPatterns) {
     if (-not (Select-String -Path $gitignorePath -Pattern ([regex]::Escape($p)) -Quiet -ErrorAction SilentlyContinue)) {
-        Write-Warning "WARNING: '$p' may not be in .gitignore — check before syncing!"
+        Write-Warning "WARNING: '$p' may not be in .gitignore - check before syncing!"
     }
 }
 
@@ -28,7 +28,7 @@ if ($PullOnly) {
 
 $status = git status --porcelain 2>&1
 if (-not $status) {
-    Write-Output "[Vault Sync] Nothing to sync — vault is clean."
+    Write-Output "[Vault Sync] Nothing to sync - vault is clean."
     exit 0
 }
 
