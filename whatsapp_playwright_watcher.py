@@ -293,6 +293,7 @@ class WhatsAppWatcher(BaseWatcher):
                 "--no-sandbox",
                 "--disable-notifications",
                 "--disable-blink-features=AutomationControlled",
+                "--remote-debugging-port=9222",
             ],
             ignore_default_args = ["--enable-automation"],
         )
@@ -624,18 +625,30 @@ class WhatsAppWatcher(BaseWatcher):
         try:
             self.log(f"Sending reply to: {chat_name}")
 
+            # Bring page to front so UI elements are interactable
+            try:
+                self.page.bring_to_front()
+                time.sleep(0.3)
+            except Exception:
+                pass
+
             # Step 1: Search box
+            # Comet UI selectors first (verified via CDP DOM inspection),
+            # legacy [data-testid="search-input"] moved to last (not present in Comet)
             search_selectors = [
-                '[data-testid="search-input"]',
-                '[aria-label="Search input textbox"]',
-                'div[contenteditable="true"][data-tab="3"]',
+                'div[contenteditable="true"][aria-label="Search"]',        # Comet: inner input
+                '[role="textbox"][aria-label="Search input textbox"]',     # Comet: outer wrapper
+                '[aria-label="Search input textbox"]',                     # Generic (Comet works)
+                'div[contenteditable="true"][data-tab="3"]',               # Tab-based fallback
+                '[data-testid="search-input"]',                            # Legacy (old UI)
             ]
             search_box = None
             for sel in search_selectors:
                 try:
-                    self.page.wait_for_selector(sel, timeout=5_000)
+                    self.page.wait_for_selector(sel, timeout=3_000)
                     search_box = self.page.query_selector(sel)
                     if search_box:
+                        self.log(f"Search box found via: {sel}")
                         break
                 except Exception:
                     continue
@@ -646,21 +659,29 @@ class WhatsAppWatcher(BaseWatcher):
 
             search_box.click()
             time.sleep(0.5)
-            search_box.fill("")
+            self.page.keyboard.press("Control+a")
+            time.sleep(0.1)
             search_box.type(chat_name, delay=60)
             time.sleep(2)
 
             # Step 2: First search result
+            # Wait for search results to appear, then grab first visible chat row
+            time.sleep(1)
             result_selectors = [
                 '[data-testid="cell-frame-container"]',
-                '[role="row"]',
+                '[role="listitem"]',
                 '[data-testid="list-item-title"]',
+                '[role="row"]',
             ]
             chat_row = None
             for sel in result_selectors:
-                chat_row = self.page.query_selector(sel)
-                if chat_row:
-                    break
+                try:
+                    self.page.wait_for_selector(sel, timeout=3_000)
+                    chat_row = self.page.query_selector(sel)
+                    if chat_row:
+                        break
+                except Exception:
+                    continue
 
             if not chat_row:
                 self.log(f"ERROR: Chat '{chat_name}' search results mein nahi mila")
@@ -671,25 +692,61 @@ class WhatsAppWatcher(BaseWatcher):
                 return False
 
             chat_row.click()
-            time.sleep(1)
+            time.sleep(2)  # Let chat panel load before looking for compose box
 
             # Step 3: Compose box
+            # Comet UI: compose box selectors differ from old UI — try all known variants,
+            # then fall back to JS-based geometric search (finds rightmost contenteditable)
             compose_selectors = [
                 '[data-testid="conversation-compose-box-input"]',
                 'div[contenteditable="true"][data-tab="10"]',
-                'div[contenteditable="true"][title="Type a message"]',
+                'div[contenteditable="true"][data-tab="6"]',
                 '[aria-label="Type a message"]',
-                'div[contenteditable="true"][spellcheck="true"]',
+                'div[contenteditable="true"][title="Type a message"]',
+                '[role="textbox"][aria-label*="message"]',
+                '[role="textbox"][aria-label*="Message"]',
+                'footer div[contenteditable="true"]',
+                '#main div[contenteditable="true"]',
             ]
             compose_box = None
             for sel in compose_selectors:
                 try:
-                    self.page.wait_for_selector(sel, timeout=5_000)
-                    compose_box = self.page.query_selector(sel)
-                    if compose_box:
+                    self.page.wait_for_selector(sel, timeout=3_000)
+                    candidate = self.page.query_selector(sel)
+                    if candidate:
+                        # Exclude the search box (left panel, data-tab="3")
+                        tab = candidate.get_attribute("data-tab") or ""
+                        aria = candidate.get_attribute("aria-label") or ""
+                        if tab == "3" or "search" in aria.lower():
+                            continue
+                        compose_box = candidate
+                        self.log(f"Compose box found via: {sel}")
                         break
                 except Exception:
                     continue
+
+            # JS fallback: find rightmost visible contenteditable that is not the search box
+            if not compose_box:
+                try:
+                    handle = self.page.evaluate_handle("""
+                        () => {
+                            const els = document.querySelectorAll('[contenteditable="true"]');
+                            for (const el of els) {
+                                const aria = (el.getAttribute('aria-label') || '').toLowerCase();
+                                const tab  = el.getAttribute('data-tab') || '';
+                                if (tab === '3' || aria.includes('search')) continue;
+                                const rect = el.getBoundingClientRect();
+                                if (rect.width > 80 && rect.height > 0 && rect.left > 300)
+                                    return el;
+                            }
+                            return null;
+                        }
+                    """)
+                    compose_box = handle.as_element()
+                    if compose_box:
+                        self.log("Compose box found via JS geometric fallback")
+                except Exception:
+                    pass
 
             if not compose_box:
                 self.log("ERROR: Message input box nahi mila")
