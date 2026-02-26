@@ -100,8 +100,24 @@ Create `/Tasks/plan_<task_name>.md` including:
 - Post invoices ONLY after human approval
 
 #### WhatsApp Actions
-- Incoming messages arrive via Twilio webhook → task created automatically
-- Outgoing replies → create approval file (external communication)
+- Incoming messages arrive via WhatsApp Playwright Watcher → task created automatically
+- **Outgoing replies** → write a JSON file to `/Outbox/WhatsApp/<task_name>.json`
+  ```json
+  {
+    "chat_name": "<exact chat name as it appears in WhatsApp>",
+    "message": "<your reply text in Urdu or English>",
+    "task_ref": "<original task filename>",
+    "created_at": "<ISO datetime>"
+  }
+  ```
+- The WhatsApp watcher will automatically detect this file and send the reply
+- For **sensitive replies** (clients, business negotiations, complaints):
+  - Create `/Pending_Approval/approval_wa_reply_<task_name>.md` first
+  - Include the proposed reply text in the approval file
+  - Do NOT write to Outbox until approved
+- For **routine replies** (general questions, acknowledgements, info sharing):
+  - At MEDIUM or HIGH autonomy: write directly to Outbox and send immediately
+- After sending, log the action in `/Logs/<date>.md`
 
 ### Step 7: Save Results
 Write completed task to `/Done/<task_name>.md` with frontmatter:

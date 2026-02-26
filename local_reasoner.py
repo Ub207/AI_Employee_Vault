@@ -167,7 +167,7 @@ def process_task(path: Path) -> None:
 
 def main() -> None:
     inbox = get_path("inbox")
-    in_progress = get_path("in_progress") / "local"
+    in_progress = get_path("in_progress")
     inbox.mkdir(parents=True, exist_ok=True)
     in_progress.mkdir(parents=True, exist_ok=True)
     

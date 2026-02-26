@@ -1,0 +1,12 @@
+D:\AI_Employee_Vault\Needs_Action\bronze_test.md
+D:\AI_Employee_Vault\Needs_Action\test_20260225_111404.md
+D:\AI_Employee_Vault\Needs_Action\test_20260225_111420.md
+D:\AI_Employee_Vault\Approved\approval_gold_demo.md
+D:\AI_Employee_Vault\Approved\approval_oracle_cloud_vm.md
+D:\AI_Employee_Vault\Approved\approval_silver_demo.md
+D:\AI_Employee_Vault\Approved\client_email.md
+D:\AI_Employee_Vault\Approved\Gmail_Inbox-event-224933.md
+D:\AI_Employee_Vault\Approved\platinum_demo_gmail.md
+D:\AI_Employee_Vault\Approved\research_competitor.md
+D:\AI_Employee_Vault\Approved\Social_Inbox-event-224938.md
+D:\AI_Employee_Vault\Approved\WhatsApp_Inbox-event-224927.md

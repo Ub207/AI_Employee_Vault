@@ -31,15 +31,19 @@ def save_state(state: dict) -> None:
 
 def is_due(cron_expr: str, last_run: str | None, now: datetime) -> bool:
     """Check if a cron job is due based on its expression and last run time."""
+    # Ensure now is timezone-naive for consistent comparison
+    now_naive = now.replace(tzinfo=None) if now.tzinfo else now
+    
     if last_run is None:
         # Never run before — check if cron time has passed today
-        cron = croniter(cron_expr, now.replace(hour=0, minute=0, second=0))
+        cron = croniter(cron_expr, now_naive.replace(hour=0, minute=0, second=0))
         next_time = cron.get_next(datetime)
-        return next_time <= now
-    last_dt = datetime.fromisoformat(last_run)
+        return next_time <= now_naive
+    # Parse last_run as naive datetime
+    last_dt = datetime.fromisoformat(last_run).replace(tzinfo=None)
     cron = croniter(cron_expr, last_dt)
     next_time = cron.get_next(datetime)
-    return next_time <= now
+    return next_time <= now_naive
 
 
 def create_scheduled_task(name: str, template: str, priority: str) -> Path:

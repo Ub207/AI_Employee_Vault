@@ -79,9 +79,49 @@ channels:
   gmail:
     watch_folder: Channels/Gmail_Inbox
     priority: P1
+    mode: json                          # "json" (watch folder) | "imap" (poll Gmail directly)
+    imap_query: "is:unread is:important"  # used in imap mode only
+  filesystem:
+    watch_folder: Inbox                 # Drop files here to trigger FILE_*.md tasks
+    priority: P2
   whatsapp:
     watch_folder: Channels/WhatsApp_Inbox
     priority: P1
+    # Group message handling rules
+    group_mode: mention_only   # mention_only | all | disabled
+    my_name: "Ubaid ur rahman" # Tumhara WhatsApp display name (mention detect karne ke liye)
+    my_name_aliases:           # Alternate names/spellings jo log use karte hain
+      - "Ubaid"
+      - "ubaid"
+      - "ubaid ur rahman"
+      - "Ub207"
+      - "bhai"
+    group_trigger_keywords:    # In words pe groups mein reply karo
+      - "help"
+      - "urgent"
+      - "koi hai"
+      - "anyone"
+      - "price"
+      - "invoice"
+    group_blacklist:           # In groups ko kabhi process mat karo
+      - "GIAIC"
+      - "Q4"
+      - "Python_MCQs"
+      - "announcement"
+      - "SUNDAY"
+      - "Thursday"
+      - "Friday"
+      - "Batch"
+      - "Jobs"
+      - "study_Group"
+      - "Rising_Star"
+      - "Combine_IT"
+      - "Khan_Digital"
+      - "disappearing"
+      - "BIN ZIYAD"             # Training/jobs broadcast channel — not a real client
+      - "Get a job"             # Jobs channel — broadcast noise
+      - "Harbor Academy"        # Training academy broadcast
+      - "wds_ic"                # Unknown broadcast
   social_linkedin:
     watch_folder: Channels/Social_Inbox
     priority: P2
@@ -96,11 +136,15 @@ channels:
 odoo_mcp:
   url: "http://localhost:8010"
   enabled: true
+  finance_watcher:
+    check_interval: 300           # seconds between Odoo polls
+    overdue_threshold_days: 0     # flag invoices past due date immediately
+    large_payment_threshold: 50000  # flag payments above this (PKR)
 
 # Ralph Wiggum loop settings
 ralph_wiggum:
   max_iterations: 10
-  state_file: "/tmp/ralph_task.json"
+  state_file: "ralph_task.json"  # Relative to OS temp dir
   completion_marker: "TASK_COMPLETE"
 
 # Platinum tier: vault sync

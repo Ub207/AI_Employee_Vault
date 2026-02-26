@@ -11,6 +11,12 @@ import os
 from pathlib import Path
 from datetime import datetime
 
+# Fix Unicode print crash on Windows (Arabic/Urdu filenames)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -115,17 +121,32 @@ class TaskHandler(FileSystemEventHandler):
         timestamp = detected_at.strftime("%H:%M:%S")
         sla_deadline = get_sla_deadline(priority, detected_at)
 
-        in_progress_dir = get_path("in_progress") / "local"
+        in_progress_dir = get_path("in_progress")
         in_progress_dir.mkdir(parents=True, exist_ok=True)
         new_path = in_progress_dir / filename
 
         try:
-            # Move file to In_Progress/local/ to "claim" it
+            # Move file to In_Progress/<role>/ to "claim" it
             os.rename(filepath, new_path)
             filepath = str(new_path)
         except Exception as e:
             print(f"[{timestamp}] ERROR: Could not claim task {filename}: {e}")
             return
+
+        # WhatsApp tasks ke liye extra reply instructions
+        wa_extra = ""
+        if filename.upper().startswith("WHATSAPP_"):
+            wa_extra = (
+                f"\n\nWHATSAPP TASK — REPLY REQUIRED:\n"
+                f"Message padhne ke baad ek helpful reply compose karo.\n"
+                f"- Routine messages ke liye: reply likho Outbox/WhatsApp/{task_name}.json mein\n"
+                f'  Format: {{"chat_name": "<sender name exactly as in WhatsApp>", '
+                f'"message": "<reply in Urdu/English>", '
+                f'"task_ref": "{filename}", '
+                f'"created_at": "<ISO datetime>"}}\n'
+                f"- Sensitive messages ke liye: Pending_Approval/approval_wa_reply_{task_name}.md banao\n"
+                f"WhatsApp watcher Outbox se auto-send karega. SKILL.md mein puri details hain."
+            )
 
         prompt = (
             f"A new task has arrived and been claimed: {filename}\n"
@@ -141,7 +162,7 @@ class TaskHandler(FileSystemEventHandler):
             f"6. Save result to /Done/{task_name}.md (include priority: {priority} and sla_deadline: {sla_deadline.strftime('%Y-%m-%d %H:%M')} in frontmatter)\n"
             f"7. Log action in /Logs\n"
             f"8. Update Dashboard.md\n"
-            f"Process this task now."
+            f"Process this task now.{wa_extra}"
         )
 
         log_event("Task Claimed", [

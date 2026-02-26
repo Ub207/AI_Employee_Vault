@@ -1,31 +1,16 @@
 ---
 type: task
-priority: P1
+priority: P2
 status: completed
-created: 2026-02-11
-completed_date: 2026-02-11
-detected_at: 2026-02-11 17:58
-sla_deadline: 2026-02-11 21:58
-sensitivity: financial
-sensitivity_score: 0.8
-approval: granted
+created: 2026-02-23
+completed_date: 2026-02-23
+detected_at: 2026-02-23 06:49
+sla_deadline: 2026-02-24 06:49
+sensitivity: none
+sensitivity_score: 0.0
+approval: not_required
 ---
 
-# Client Invoice Request
+# test_task
 
-**Original Request:** Client asked for invoice.
-
-## Resolution
-- Identified as sensitive action (financial document) per Company Handbook
-- Created plan at `/Tasks/plan_test_task.md`
-- Requested approval and client details from manager
-- Invoice drafted and approved
-
-## Invoice Summary (Demo)
-| Item | Amount |
-|------|--------|
-| Consulting Services — February 2026 | $500.00 |
-| **Total** | **$500.00** |
-
-## Outcome
-Task completed. Invoice prepared and ready for delivery.
+Draft prepared and completed.

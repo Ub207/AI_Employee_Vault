@@ -29,10 +29,26 @@ def reload_config() -> dict:
     return load_config()
 
 
+def get_agent_role() -> str:
+    """Return the current agent role ('local' or 'cloud'). Priority: Env > Config."""
+    import os
+    env_role = os.getenv("AGENT_ROLE")
+    if env_role:
+        return env_role.lower()
+    cfg = load_config()
+    return cfg.get("agent_role", "local").lower()
+
+
 def get_path(folder_name: str) -> Path:
     """Resolve a folder path from config. e.g. get_path('inbox') -> VAULT/Needs_Action"""
     cfg = load_config()
     folder = cfg.get("folders", {}).get(folder_name, folder_name)
+    
+    # Platinum Tier: Handle agent-specific In_Progress subfolders
+    if folder_name == "in_progress":
+        role = get_agent_role()
+        return VAULT_PATH / folder / role
+        
     return VAULT_PATH / folder
 
 

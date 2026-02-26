@@ -18,7 +18,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-STATE_FILE = Path("/tmp/ralph_task.json")
+import tempfile
+STATE_FILE = Path(tempfile.gettempdir()) / "ralph_task.json"
 VAULT_PATH = Path(__file__).parent.resolve()
 
 
